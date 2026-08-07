@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { foto } from "../foto";
 
 // Barbeiros. O preco muda conforme quem atende: o site de agendamento marca
 // varios servicos como "atendimento exclusivo com Edson Thiago", mais caros
@@ -126,7 +127,7 @@ export default function Agendar() {
                   aria-pressed={barber.id === b.id}
                 >
                   <span className="polaroid-foto">
-                    <img src={`/fotos/${b.foto}.jpg`} alt={b.name} />
+                    <img src={foto(b.foto)} alt={b.name} />
                   </span>
                   <span className="polaroid-legenda">
                     <span className="barber-name">{b.name}</span>

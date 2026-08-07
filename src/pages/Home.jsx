@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import glyph from "../assets/mosseri-glyph.svg";
+import { foto } from "../foto";
 import Marquee from "../components/Marquee";
 import MiniMapa from "../components/MiniMapa";
 
@@ -7,7 +8,7 @@ export default function Home() {
   return (
     <>
       <section className="hero">
-        <img className="hero-photo" src="/fotos/vitrine.jpg" alt="" aria-hidden="true" />
+        <img className="hero-photo" src={foto("vitrine")} alt="" aria-hidden="true" />
         <div className="container">
           <div className="hero-eyebrow-row">
             <span className="eyebrow">
@@ -76,7 +77,7 @@ export default function Home() {
           </div>
           <div className="cards-grid">
             <div className="card-photo">
-              <img className="card-img" src="/fotos/ambiente.jpg" alt="Salão da Mosseri" />
+              <img className="card-img" src={foto("ambiente")} alt="Salão da Mosseri" />
               <h3>Ambiente</h3>
               <p>
                 Som baixo, luz medida, nenhuma tela ligada gritando. O
@@ -85,7 +86,7 @@ export default function Home() {
               </p>
             </div>
             <div className="card-photo">
-              <img className="card-img" src="/fotos/time.jpg" alt="Barbeiros da Mosseri" />
+              <img className="card-img" src={foto("time")} alt="Barbeiros da Mosseri" />
               <h3>Time</h3>
               <p>
                 Cada barbeiro com o próprio ritmo, todos com a mesma
@@ -93,7 +94,7 @@ export default function Home() {
               </p>
             </div>
             <div className="card-photo">
-              <img className="card-img" src="/fotos/barboterapia.jpg" alt="Barboterapia com toalha quente" />
+              <img className="card-img" src={foto("barboterapia")} alt="Barboterapia com toalha quente" />
               <h3>Barboterapia</h3>
               <p>
                 Mais do que estilo, é cuidado. Toalha quente, navalha, pele

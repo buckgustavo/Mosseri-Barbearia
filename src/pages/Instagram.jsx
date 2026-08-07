@@ -1,4 +1,5 @@
 import Logo from "../components/Logo";
+import { foto } from "../foto";
 
 const POSTS = [
   { src: "post-1", alt: "Barbeiro finalizando o corte" },
@@ -49,7 +50,7 @@ export default function Instagram() {
             target="_blank"
             rel="noreferrer"
           >
-            <img src={`/fotos/${p.src}.jpg`} alt={p.alt} loading="lazy" />
+            <img src={foto(p.src)} alt={p.alt} loading="lazy" />
           </a>
         ))}
         <a
