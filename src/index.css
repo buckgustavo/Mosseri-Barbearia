@@ -1,0 +1,1365 @@
+/* Paleta extraída pixel a pixel dos prints originais do projeto.
+   Os neutros têm viés azul de propósito: o original nunca usa cinza puro. */
+:root {
+  --bg: #0b0e15;
+  --bg-elev: #12161f;
+  --bg-elev-2: #1b1f28;
+  --border: #222735;
+  --border-dashed: #333a48;
+  --blue: #01539c;
+  --blue-hover: #1a60a3;
+  --blue-dark: #073059;
+  --blue-deep: #081827;
+  --blue-bright: #3d8ddb;
+  --text: #eef1f4;
+  --text-muted: #8e97a5;
+  --text-dim: #5c6472;
+  --radius: 3px;
+  --container: clamp(320px, 49vw, 1100px);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  width: 100%;
+  min-height: 100%;
+}
+
+body {
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Foco visível: o teclado precisa enxergar onde está sem depender do hover. */
+:focus-visible {
+  outline: 2px solid var(--blue-bright);
+  outline-offset: 2px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+}
+
+/* O container do original acompanha a janela: medi ~49% da largura nos dois
+   prints (768px em 1600, 616px em 1242). Largura fixa acerta um e erra o outro. */
+.container {
+  width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 22px;
+  border-radius: var(--radius);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid transparent;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--blue-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--border-dashed);
+  color: var(--text);
+}
+.btn-outline:hover {
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
+}
+
+.btn-white {
+  background: #fff;
+  color: var(--blue-deep);
+}
+.btn-white:hover {
+  background: #e6ecf7;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* Nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: rgba(11, 14, 21, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-size: 13.5px;
+  text-transform: uppercase;
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+}
+
+.logo-mark {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* altura relativa à fonte do lockup: mantém a proporção em qualquer tamanho */
+  height: 1.05em;
+}
+
+.logo-mark img {
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+/* a variante em disco define a própria altura, então ignora o 1.05em acima */
+.logo-mark-circle {
+  background: var(--blue);
+  border-radius: 50%;
+  height: auto;
+}
+
+.logo-mark-circle img {
+  height: 42%;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-bottom: 4px;
+  border-bottom: 1px solid transparent;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+  color: var(--text);
+  border-bottom-color: var(--blue-bright);
+}
+
+.nav-links .btn {
+  margin-left: 6px;
+}
+
+/* Placeholder image slot */
+.img-slot {
+  background: var(--bg-elev);
+  border: 1px dashed var(--border-dashed);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  position: relative;
+  overflow: hidden;
+}
+
+.img-slot-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  padding: 8px;
+}
+
+.img-slot svg {
+  width: 22px;
+  height: 22px;
+  opacity: 0.45;
+}
+
+.img-slot .img-slot-label {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.img-slot .img-slot-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Marquee */
+.marquee {
+  background: var(--blue);
+  color: #fff;
+  overflow: hidden;
+  padding: 12px 0;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.marquee-run {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.marquee-dot {
+  margin: 0 18px;
+  opacity: 0.55;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 44px 0 56px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+
+.footer-brand .logo {
+  font-size: 16px;
+}
+
+.footer-grid h4 {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.footer-grid p,
+.footer-grid a {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  margin: 0 0 6px;
+  display: block;
+}
+
+.footer-links a:hover {
+  color: var(--text);
+}
+
+/* depois de .footer-grid p para vencer no desempate por ordem */
+.footer-grid .footer-brand p {
+  margin-top: 16px;
+  max-width: 240px;
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .container,
+  .nav-inner {
+    width: 92vw;
+  }
+}
+
+@media (max-width: 720px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .nav-links {
+    display: none;
+  }
+}
+
+/* ---- Hero ---- */
+.hero {
+  position: relative;
+  padding: 130px 0 64px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Foto da vitrine ao fundo. O degradê por cima escurece o lado esquerdo para
+   o título manter contraste, e deixa a fachada aparecer à direita. */
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 38%;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      100deg,
+      rgba(11, 14, 21, 0.97) 0%,
+      rgba(11, 14, 21, 0.92) 38%,
+      rgba(11, 14, 21, 0.55) 68%,
+      rgba(11, 14, 21, 0.35) 100%
+    ),
+    linear-gradient(to bottom, rgba(11, 14, 21, 0.6), transparent 30%);
+  pointer-events: none;
+}
+
+.hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-eyebrow-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 18px;
+}
+
+.eyebrow-rule {
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--blue-bright);
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.hero h1 {
+  font-size: clamp(26px, 3.4vw, 38px);
+  max-width: 640px;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.hero p.lead {
+  color: var(--text-muted);
+  max-width: 480px;
+  margin-top: 18px;
+  font-size: 12.5px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-top: 56px;
+  background: rgba(18, 22, 31, 0.6);
+}
+
+.stat {
+  padding: 20px 24px;
+  border-right: 1px solid var(--border);
+}
+.stat:last-child {
+  border-right: none;
+}
+
+.stat .num {
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--text);
+}
+
+.stat p {
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-top: 6px;
+  max-width: 220px;
+}
+
+/* ---- Numbered sections ---- */
+.section {
+  padding: 56px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.section-num {
+  font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--blue-bright);
+}
+
+.section h2 {
+  font-size: clamp(18px, 2.2vw, 24px);
+  max-width: 640px;
+  margin: 6px 0 22px;
+}
+
+.section .prose {
+  color: var(--text-muted);
+  max-width: 640px;
+  font-size: 12.5px;
+  margin-bottom: 14px;
+}
+
+.section .prose em {
+  color: var(--text);
+  font-style: italic;
+}
+
+/* Cards grid (A Casa) */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.card-photo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.card-photo .card-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.card-photo h3 {
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 700;
+}
+
+.card-photo p {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  max-width: 340px;
+}
+
+/* Location section */
+.location-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Mini mapa: Leaflet com tiles escuros da CARTO e um pino azul pulsante,
+   como no video do projeto original. A moldura 4:3 vem do PDF. */
+.map-box {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  overflow: hidden;
+}
+
+.mapa-canvas {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-elev);
+}
+
+/* escurece as bordas para os rotulos lerem sobre o mapa */
+.map-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 450;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(11, 14, 21, 0.75),
+    rgba(11, 14, 21, 0) 28%,
+    rgba(11, 14, 21, 0) 72%,
+    rgba(11, 14, 21, 0.75)
+  );
+}
+
+/* o Leaflet pinta o fundo de cinza claro por padrao */
+.mapa-canvas .leaflet-container {
+  background: #0b0e15;
+  font: inherit;
+}
+
+.mapa-canvas .leaflet-control-attribution {
+  background: rgba(11, 14, 21, 0.7);
+  color: var(--text-dim);
+  font-size: 9px;
+}
+
+.mapa-canvas .leaflet-control-attribution a {
+  color: var(--text-muted);
+}
+
+.mapa-pino-ponto,
+.mapa-pino-halo {
+  position: absolute;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.mapa-pino-ponto {
+  width: 11px;
+  height: 11px;
+  background: #3d8ddb;
+  border: 2px solid #eaf2fb;
+  box-shadow: 0 0 12px 3px rgba(61, 141, 219, 0.9);
+}
+
+.mapa-pino-halo {
+  width: 22px;
+  height: 22px;
+  background: rgba(61, 141, 219, 0.35);
+  animation: pino-pulso 2.4s ease-out infinite;
+}
+
+@keyframes pino-pulso {
+  0% {
+    transform: translate(-50%, -50%) scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mapa-pino-halo {
+    animation: none;
+  }
+}
+
+.map-label-top,
+.map-label-bottom {
+  position: absolute;
+  z-index: 500;
+  left: 18px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.map-label-top {
+  top: 16px;
+}
+
+.map-label-bottom {
+  bottom: 16px;
+}
+
+.map-label-bottom:hover {
+  color: var(--blue-bright);
+}
+
+.location-meta {
+  display: flex;
+  gap: 40px;
+  margin: 18px 0 22px;
+  font-size: 12.5px;
+}
+
+.location-meta .label {
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 10.5px;
+  margin-bottom: 4px;
+}
+
+.location-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* CTA banner */
+.cta-banner {
+  position: relative;
+  background: linear-gradient(135deg, var(--blue-dark), var(--blue));
+  padding: 64px 0;
+  overflow: hidden;
+}
+
+/* marca d'água: a logo real, sangrando pela direita da faixa */
+.cta-banner .logo-ghost {
+  position: absolute;
+  right: -40px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: auto;
+  opacity: 0.13;
+  pointer-events: none;
+}
+
+.cta-banner h2 {
+  font-size: clamp(20px, 2.6vw, 29px);
+  color: #fff;
+  max-width: 520px;
+}
+
+.cta-banner .eyebrow {
+  color: #cfe0ff;
+}
+
+.cta-banner-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 800px) {
+  .cards-grid,
+  .location-grid,
+  .stats-row {
+    grid-template-columns: 1fr;
+  }
+  .stat {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+/* ---- Page header (Catálogo / Instagram / Agendar) ---- */
+.page-head {
+  padding: 56px 0 36px;
+  border-bottom: 1px solid var(--border);
+}
+
+.page-head-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.page-head h1 {
+  font-size: clamp(22px, 2.8vw, 30px);
+  margin-top: 8px;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  padding: 9px 16px;
+  border: 1px solid var(--border-dashed);
+  border-radius: var(--radius);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+}
+
+.tab.active {
+  background: #fff;
+  color: #0a0b0e;
+  border-color: #fff;
+}
+
+/* Product grid */
+.product-grid {
+  padding: 40px 0 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px 20px;
+}
+
+.product-card .img-slot {
+  aspect-ratio: 1;
+}
+
+.product-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-top: 12px;
+}
+
+.product-row h3 {
+  font-size: 12px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-weight: 700;
+}
+
+.product-row .price {
+  font-variant-numeric: tabular-nums;
+  color: var(--blue-bright);
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.product-card p {
+  color: var(--text-muted);
+  font-size: 11px;
+  margin-top: 6px;
+}
+
+.fine-print {
+  color: var(--text-dim);
+  font-size: 12px;
+  padding-bottom: 40px;
+}
+
+@media (max-width: 900px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- Instagram page ---- */
+/* O cabecalho usa .page-head, igual as outras paginas. Aqui fica so o cartao
+   do perfil, que entra como coluna a direita do titulo. */
+.ig-profile-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  min-width: 210px;
+  text-align: left;
+}
+
+.ig-profile-card .handle {
+  color: var(--text);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.ig-profile-card .followers {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  margin: 4px 0 14px;
+}
+
+.ig-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 0;
+  margin-bottom: 60px;
+}
+
+.ig-tile {
+  aspect-ratio: 1;
+  overflow: hidden;
+  display: block;
+  background: var(--bg-elev);
+}
+
+.ig-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, opacity 0.2s ease;
+}
+
+.ig-tile:hover img {
+  transform: scale(1.05);
+  opacity: 0.85;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ig-tile img,
+  .ig-tile:hover img {
+    transition: none;
+    transform: none;
+  }
+}
+
+.ig-grid .img-slot .img-slot-label {
+  font-size: 11px;
+}
+
+.ig-view-all {
+  aspect-ratio: 1;
+  background: var(--bg-elev-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--blue-bright);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .ig-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ---- Agendar page ---- */
+.service-group + .service-group {
+  margin-top: 18px;
+}
+
+.service-group .tg-label {
+  margin-bottom: 8px;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Escolha de barbeiro: polaroides sobre o fundo escuro. A inclinacao alternada
+   da o ar de foto largada na bancada; a selecionada endireita e sobe. */
+.barber-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  padding: 6px 0 10px;
+}
+
+.barber-card {
+  display: block;
+  padding: 10px 10px 0;
+  background: #f4f1ea;
+  border: none;
+  border-radius: 2px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, outline-color 0.15s ease;
+  outline: 2px solid transparent;
+  outline-offset: 3px;
+}
+
+.barber-card:nth-child(odd) {
+  transform: rotate(-2.2deg);
+}
+
+.barber-card:nth-child(even) {
+  transform: rotate(1.8deg);
+}
+
+.polaroid-foto {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #ddd8cd;
+}
+
+.polaroid-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.polaroid-legenda {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 9px 4px 12px;
+}
+
+.barber-name {
+  font-family: "Caveat", "Segoe Script", cursive;
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1;
+  color: #16181d;
+}
+
+.barber-desc {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: #6d6a63;
+}
+
+.barber-card:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.55);
+}
+
+.barber-card.selected {
+  transform: rotate(0deg) translateY(-4px);
+  outline-color: var(--blue-bright);
+  box-shadow: 0 14px 30px rgba(1, 83, 156, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barber-card,
+  .barber-card:hover,
+  .barber-card.selected {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .barber-picker {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  padding: 40px 0 70px;
+  align-items: start;
+}
+
+.page-lead {
+  color: var(--text-muted);
+  font-size: 12.5px;
+  max-width: 520px;
+  margin-top: 12px;
+}
+
+.booking-step {
+  margin-bottom: 38px;
+}
+
+.step-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.step-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+}
+
+.step-head .step-label {
+  margin-bottom: 0;
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.week-range {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.week-nav button {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+}
+
+.week-nav button:hover {
+  color: var(--text);
+}
+
+/* Lista de serviços: sem caixa externa, apenas fios entre as linhas. */
+.service-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--border);
+}
+
+.service-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 14px 14px 0;
+  /* zera a borda do UA antes de desenhar só as que interessam */
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-left: 2px solid transparent;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+  color: var(--text);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.service-item:hover {
+  background: rgba(18, 22, 31, 0.6);
+}
+
+.service-item.selected {
+  background: var(--blue-deep);
+  border-left-color: var(--blue);
+  padding-left: 14px;
+}
+
+.service-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.service-name {
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.service-desc {
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.service-item .price {
+  color: var(--blue-bright);
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.day-picker {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 7px;
+}
+
+.day-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 9px 2px;
+  background: transparent;
+  color: var(--text);
+}
+
+.day-cell .dow,
+.day-cell .mon {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.day-cell .dom {
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.day-cell:hover:not(:disabled) {
+  border-color: var(--text-dim);
+}
+
+.day-cell.selected {
+  background: var(--blue-hover);
+  border-color: var(--blue-hover);
+}
+
+.day-cell.selected .dow,
+.day-cell.selected .mon {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.day-cell:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+
+.hint {
+  color: var(--text-dim);
+  font-size: 11.5px;
+  margin-top: 10px;
+}
+
+.time-group {
+  margin-bottom: 18px;
+}
+
+.time-group .tg-label {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.time-slots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.time-slot {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 13px;
+  font-size: 11.5px;
+  background: transparent;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.time-slot:hover {
+  border-color: var(--text-dim);
+}
+
+.time-slot.selected {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.summary-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  padding: 22px;
+  margin-bottom: 26px;
+}
+
+.summary-title {
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+
+.summary-title.spaced {
+  margin-top: 4px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.summary-row.total {
+  border-bottom: none;
+  padding-top: 14px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.summary-row .label {
+  color: var(--text-muted);
+}
+
+.summary-card .btn {
+  margin-top: 16px;
+}
+
+.summary-note {
+  color: var(--text-dim);
+  font-size: 11px;
+  margin-top: 12px;
+}
+
+.hours-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  overflow: hidden;
+}
+
+.hours-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 11.5px;
+}
+
+.hours-row:last-child {
+  border-bottom: none;
+}
+
+.hours-row .day {
+  font-weight: 700;
+}
+
+.hours-row .day.closed {
+  color: var(--text-dim);
+  font-weight: 400;
+}
+
+/* Os dois turnos empilham, como no original. */
+.hours-row .time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  color: var(--text-muted);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.whatsapp-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  padding: 15px 18px;
+  margin-top: 22px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.whatsapp-link:hover {
+  border-color: var(--blue-bright);
+  color: var(--blue-bright);
+}
+
+@media (max-width: 860px) {
+  .booking-grid {
+    grid-template-columns: 1fr;
+  }
+  .day-picker {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
