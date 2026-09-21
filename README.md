@@ -13,12 +13,22 @@ Instagram e Agendar.
 
 ## Rodando
 
+A página `/agendar` fala com a API em `../backend`, que precisa estar de pé:
+
+```bash
+cd ../backend && npm install && npm run dev   # http://127.0.0.1:3333
+```
+
 ```bash
 npm install
 npm run dev      # http://localhost:5173
 npm run build    # gera dist/
 npm run preview  # serve o build
 ```
+
+Em dev o vite faz proxy de `/api` para o backend, então não há CORS no caminho.
+No build o site é estático e a API mora em outro host: passe a URL dela em
+`VITE_API_URL` (`VITE_API_URL=https://api.exemplo.com npm run build`).
 
 ## Scripts de assets
 
@@ -55,10 +65,18 @@ fixa.
 - **Serviços, durações e preços** vêm da agenda pública da barbearia no
   MinhaAgenda. O preço muda conforme o barbeiro: vários serviços são
   atendimento exclusivo com Edson Thiago e custam mais que os da equipe.
-- **Horário de atendimento** é a fonte única em `EXPEDIENTE`, dentro de
-  `src/pages/Agendar.jsx`. A tabela exibida e os horários oferecidos saem dos
-  mesmos dados, então não podem divergir. Um horário só aparece se o serviço
-  couber inteiro dentro da faixa.
+- **Tudo isso mora no backend agora**, não mais em constantes no `Agendar.jsx`.
+  A tela não calcula nada de agenda: pede a `/api/disponibilidade` e desenha o
+  que voltar. Se um horário aparece, é porque o backend disse que o serviço
+  inteiro cabe ali e nada o ocupa — e é ele quem confirma de novo no `POST`.
+- **A reserva volta pro cliente.** Não existe confirmação por e-mail nem
+  WhatsApp: o código só aparece na tela da vez. O par código+telefone fica no
+  `localStorage` e a página consulta a reserva de novo ao abrir — cancelada ou
+  de dia que já passou não volta. Quem trocou de aparelho digita o par no
+  formulário "Já tem reserva?". Sem storage (aba anônima) esse formulário é o
+  único caminho, e nada na tela quebra por causa disso.
+- **O resto das páginas continua com dados no código.** Produtos do Catálogo e
+  posts do Instagram ainda são constantes locais.
 
 ## Pendências conhecidas
 
@@ -70,3 +88,5 @@ fixa.
   produtos publicado; o design original também os marcava como provisórios.
 - **Textos do manifesto e descrições** foram escritos para o projeto, não são
   a copy original.
+- **O backend não tem autenticação nem painel do barbeiro.** Quem tem a URL
+  cria reserva. Veja `../backend/README.md`.

@@ -1296,6 +1296,31 @@ p {
   margin-top: 12px;
 }
 
+/* Nota que serve de subtitulo do cartao encosta no titulo, nao flutua. */
+.summary-title + .summary-note {
+  margin-top: 0;
+}
+
+/* Sair do cartao sem cancelar nada: acao secundaria, nao pode competir com o
+   botao de cancelar logo acima. */
+.btn-linha {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--text-dim);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.btn-linha:hover {
+  color: var(--blue-bright);
+}
+
 .hours-table {
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -1353,6 +1378,118 @@ p {
 .whatsapp-link:hover {
   border-color: var(--blue-bright);
   color: var(--blue-bright);
+}
+
+/* Formulario da reserva e estados que so existem com a API atras: carregando,
+   erro e confirmacao. Tudo reusa os tokens do cartao de resumo. */
+.campo {
+  margin-top: 14px;
+}
+
+.campo label {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.campo input {
+  width: 100%;
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+/* O codigo e lido em voz alta e digitado letra a letra: mesmo tratamento do
+   cartao de confirmacao, pra parecer o mesmo objeto. */
+.campo input.codigo {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.campo input::placeholder {
+  color: var(--text-dim);
+}
+
+.campo input:hover {
+  border-color: var(--text-dim);
+}
+
+.campo input:focus {
+  border-color: var(--blue-bright);
+  outline: none;
+}
+
+.form-erro,
+.hint.erro {
+  color: #e08a8a;
+  font-size: 11.5px;
+  margin-top: 12px;
+}
+
+/* O codigo e a unica coisa que o cliente precisa guardar: monoespacado, com
+   espaco entre as letras, pra ninguem confundir na hora de ler no telefone. */
+.codigo-reserva {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  border: 1px dashed var(--border-dashed);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 16px;
+}
+
+.codigo-reserva .label {
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.codigo-reserva strong {
+  font-family: ui-monospace, "SF Mono", "Cascadia Mono", Menlo, monospace;
+  font-size: 20px;
+  letter-spacing: 0.16em;
+  color: var(--blue-bright);
+}
+
+/* Recarga da agenda: apaga sem sumir, senao a grade pula de altura a cada
+   troca de servico. */
+.day-picker.carregando {
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 120ms ease;
+}
+
+.barber-card:disabled,
+.service-item:disabled,
+.time-slot:disabled {
+  cursor: not-allowed;
+}
+
+.barber-card:disabled:not(.selected),
+.service-item:disabled:not(.selected),
+.time-slot:disabled:not(.selected) {
+  opacity: 0.4;
+}
+
+.estado-vazio {
+  padding: 80px 0 100px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .day-picker.carregando {
+    transition: none;
+  }
 }
 
 @media (max-width: 860px) {
