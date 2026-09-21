@@ -1,7 +1,8 @@
 # Mosseri Barbearia
 
-Site da Mosseri Barbearia, em Cravinhos/SP. Quatro páginas: A Casa, Catálogo,
-Instagram e Agendar.
+Site da Mosseri Barbearia, em Cravinhos/SP. Quatro páginas públicas — A Casa,
+Catálogo, Instagram e Agendar — mais `/admin`, a área gerencial, que fica fora
+do menu.
 
 ## Stack
 
@@ -75,8 +76,28 @@ fixa.
   de dia que já passou não volta. Quem trocou de aparelho digita o par no
   formulário "Já tem reserva?". Sem storage (aba anônima) esse formulário é o
   único caminho, e nada na tela quebra por causa disso.
-- **O resto das páginas continua com dados no código.** Produtos do Catálogo e
-  posts do Instagram ainda são constantes locais.
+- **Produtos do Catálogo vêm do banco.** A página lê `/api/produtos` e a
+  barbearia cadastra os itens em `/admin`. Eles não têm foto: todos recebem o
+  mesmo espaço vazio do design.
+- **Posts do Instagram ainda são constantes locais.**
+
+## Área gerencial (`/admin`)
+
+Fora do menu, protegida por uma senha só, com sessão de 12h guardada no
+`localStorage` (cookie não serve: no GitHub Pages o site e a API vivem em
+origens diferentes). Seis abas, todas falando com `/api/admin`:
+
+| Aba | Para quê |
+|---|---|
+| Agenda do dia | quem vem hoje, com telefone, observação e receita do dia; cancela pela casa |
+| Folgas e feriados | fecha a casa ou um barbeiro numa faixa, e avisa quem já estava marcado |
+| Barbeiros | adiciona, edita, tira do site, remove |
+| Serviços e preços | grade serviço × barbeiro; preço em branco = ele não faz |
+| Expediente | a semana inteira, faixa a faixa; dia sem faixa é dia fechado |
+| Produtos | o catálogo que a página Catálogo desenha |
+
+Token morto cai no login sozinho. A tela não decide nada: quem valida senha,
+sessão e regra é o backend.
 
 ## Pendências conhecidas
 

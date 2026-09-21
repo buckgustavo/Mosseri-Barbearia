@@ -1500,3 +1500,424 @@ p {
     grid-template-columns: repeat(4, 1fr);
   }
 }
+
+/* ---------------------------------------------------------------- Área gerencial
+   Mesma paleta e os mesmos tokens do site público: quem cuida da barbearia não
+   merece uma segunda identidade visual. A diferença é a densidade -- aqui a
+   tela é ferramenta, então cabe mais coisa por linha. */
+.admin {
+  padding-bottom: 80px;
+}
+
+.admin input,
+.admin select {
+  /* Os seletores nativos de data e hora precisam saber que o fundo é escuro. */
+  color-scheme: dark;
+}
+
+.admin-entrar {
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.admin-sessao {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.admin-sessao .btn-linha {
+  width: auto;
+  margin-top: 0;
+}
+
+.admin-abas {
+  margin: 8px 0 22px;
+  flex-wrap: wrap;
+}
+
+.admin-painel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.admin-datas {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-datas .btn {
+  padding: 9px 14px;
+}
+
+.admin-totais {
+  display: flex;
+  gap: 18px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.admin-totais strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-form,
+.admin-linha,
+.admin-reserva {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  padding: 16px 18px;
+}
+
+.admin-form-campos {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-form-campos .campo {
+  margin-top: 0;
+  min-width: 120px;
+}
+
+.admin-form-campos .campo.cresce {
+  flex: 1 1 200px;
+}
+
+.admin .campo span {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.admin select,
+.admin input[type="date"],
+.admin input[type="time"] {
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+.admin select:focus,
+.admin input:focus {
+  border-color: var(--blue-bright);
+  outline: none;
+}
+
+.admin-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-linha.empilha {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+}
+
+/* Fora do site, mas não apagado: continua legível, só não parece ativo. */
+.admin-linha.inativa,
+.grade-linha.inativa {
+  opacity: 0.55;
+}
+
+.linha-principal {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+
+.linha-acoes {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.linha-acoes .btn-linha,
+.linha-principal .btn-linha {
+  width: auto;
+  margin-top: 0;
+}
+
+.apagado {
+  color: var(--text-dim);
+  font-size: 11.5px;
+}
+
+.apagado code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.pill {
+  border: 1px dashed var(--border-dashed);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Reservas do dia: a hora à esquerda vira a régua vertical da lista. */
+.admin-reserva {
+  display: grid;
+  grid-template-columns: 74px 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.admin-reserva.cancelada {
+  opacity: 0.5;
+}
+
+.admin-reserva.cancelada .reserva-cliente {
+  text-decoration: line-through;
+}
+
+.reserva-hora {
+  display: flex;
+  flex-direction: column;
+  font-variant-numeric: tabular-nums;
+}
+
+.reserva-hora strong {
+  font-size: 17px;
+  color: var(--blue-bright);
+}
+
+.reserva-hora span {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.reserva-topo {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.reserva-cliente {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.reserva-telefone {
+  color: var(--blue-bright);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.reserva-telefone:hover {
+  text-decoration: underline;
+}
+
+.reserva-baixo {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.codigo-inline {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  letter-spacing: 0.1em;
+}
+
+.reserva-obs {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.reserva-acao .btn-linha {
+  width: auto;
+  margin-top: 0;
+}
+
+/* Aviso que pede ação humana: quem fecha um dia precisa ligar pra quem já
+   estava marcado, e isso não pode passar despercebido. */
+.admin-aviso {
+  border: 1px solid #6b4a1f;
+  border-radius: var(--radius);
+  background: #1d1608;
+  padding: 16px 18px;
+  font-size: 12.5px;
+}
+
+.admin-aviso ul {
+  margin: 10px 0 6px;
+  padding-left: 18px;
+  color: var(--text-muted);
+}
+
+.admin-aviso .btn-linha {
+  width: auto;
+  margin-top: 4px;
+}
+
+/* Grade serviço × barbeiro: uma coluna por barbeiro, preço editável na célula. */
+.grade-precos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.grade-linha {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) repeat(var(--colunas, 2), 110px);
+  gap: 12px;
+  align-items: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  padding: 12px 14px;
+}
+
+.grade-linha.cabecalho {
+  border-color: transparent;
+  background: none;
+  padding-bottom: 0;
+}
+
+.grade-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.grade-meta .btn-linha {
+  width: auto;
+  margin-top: 0;
+}
+
+.entrada-nome,
+.entrada-minutos,
+.celula-preco {
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+}
+
+.entrada-nome {
+  width: 100%;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.entrada-minutos {
+  width: 60px;
+  text-align: center;
+}
+
+.celula-preco {
+  width: 100%;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.celula-preco::placeholder {
+  color: var(--text-dim);
+}
+
+.btn-mini {
+  padding: 7px 12px;
+}
+
+.faixas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.faixa {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.faixa .btn-linha {
+  width: auto;
+  margin-top: 0;
+}
+
+.admin-rodape {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.admin-rodape .hint {
+  flex: 1 1 260px;
+  margin: 0;
+}
+
+.admin-senha {
+  margin-bottom: 18px;
+}
+
+/* Iniciais no lugar da foto de quem foi cadastrado sem arquivo de imagem. */
+.polaroid-iniciais {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-elev-2);
+  color: var(--text-dim);
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+@media (max-width: 860px) {
+  .grade-linha {
+    grid-template-columns: 1fr;
+  }
+  .admin-reserva {
+    grid-template-columns: 60px 1fr;
+  }
+  .reserva-acao {
+    grid-column: 2;
+    text-align: right;
+  }
+}

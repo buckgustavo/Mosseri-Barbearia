@@ -41,6 +41,8 @@ const query = (params) =>
 export const api = {
   barbeiros: () => pedir("/api/barbeiros"),
 
+  produtos: () => pedir("/api/produtos"),
+
   servicos: (barbeiro) => pedir(`/api/servicos?${query({ barbeiro })}`),
 
   expediente: () => pedir("/api/expediente"),
@@ -64,4 +66,131 @@ export const api = {
     pedir(`/api/agendamentos/${encodeURIComponent(codigo.trim())}?${query({ telefone })}`, {
       method: "DELETE",
     }),
+};
+
+// --------------------------------------------------------------- area gerencial
+// A barbearia entra com uma senha so e recebe um token de 12h. Ele fica no
+// localStorage: cookie nao serve porque no GitHub Pages o site e a API vivem em
+// origens diferentes. Token morto (401) e apagado na hora -- a tela volta pro
+// login em vez de insistir com credencial que o servidor ja recusou.
+const CHAVE_TOKEN = "mosseri:admin";
+
+export const tokenAdmin = {
+  ler() {
+    try {
+      return localStorage.getItem(CHAVE_TOKEN);
+    } catch {
+      return null;
+    }
+  },
+  guardar(token) {
+    try {
+      localStorage.setItem(CHAVE_TOKEN, token);
+    } catch {
+      /* sem storage a sessao vale so enquanto a aba estiver aberta */
+    }
+  },
+  limpar() {
+    try {
+      localStorage.removeItem(CHAVE_TOKEN);
+    } catch {
+      /* nada a limpar */
+    }
+  },
+};
+
+let tokenNaMemoria = null;
+
+const corpo = (dados) => ({
+  body: JSON.stringify(dados),
+  headers: { "content-type": "application/json" },
+});
+
+async function pedirAdmin(caminho, opcoes = {}) {
+  const token = tokenAdmin.ler() ?? tokenNaMemoria;
+  if (!token) throw new ErroApi("Sessão encerrada. Entre de novo.", "nao_autorizado", 401);
+
+  try {
+    return await pedir(caminho, {
+      ...opcoes,
+      headers: { ...opcoes.headers, authorization: `Bearer ${token}` },
+    });
+  } catch (e) {
+    if (e instanceof ErroApi && e.status === 401) {
+      tokenAdmin.limpar();
+      tokenNaMemoria = null;
+    }
+    throw e;
+  }
+}
+
+function guardarSessao(sessao) {
+  tokenNaMemoria = sessao.token;
+  tokenAdmin.guardar(sessao.token);
+  return sessao;
+}
+
+export const admin = {
+  temToken: () => Boolean(tokenAdmin.ler() ?? tokenNaMemoria),
+
+  entrar: async (senha) =>
+    guardarSessao(await pedir("/api/admin/sessao", { method: "POST", ...corpo({ senha }) })),
+
+  conferir: () => pedirAdmin("/api/admin/sessao"),
+
+  sair: async () => {
+    try {
+      await pedirAdmin("/api/admin/sessao", { method: "DELETE" });
+    } catch {
+      /* token ja podia estar vencido; o que importa e sumir com ele daqui */
+    } finally {
+      tokenAdmin.limpar();
+      tokenNaMemoria = null;
+    }
+  },
+
+  trocarSenha: async (atual, nova) =>
+    guardarSessao(await pedirAdmin("/api/admin/senha", { method: "POST", ...corpo({ atual, nova }) })),
+
+  agenda: (data) => pedirAdmin(`/api/admin/agenda?${query({ data })}`),
+
+  cancelarReserva: (codigo) =>
+    pedirAdmin(`/api/admin/agendamentos/${encodeURIComponent(codigo)}`, { method: "DELETE" }),
+
+  barbeiros: () => pedirAdmin("/api/admin/barbeiros"),
+  criarBarbeiro: (dados) => pedirAdmin("/api/admin/barbeiros", { method: "POST", ...corpo(dados) }),
+  editarBarbeiro: (id, dados) =>
+    pedirAdmin(`/api/admin/barbeiros/${encodeURIComponent(id)}`, { method: "PATCH", ...corpo(dados) }),
+  removerBarbeiro: (id) =>
+    pedirAdmin(`/api/admin/barbeiros/${encodeURIComponent(id)}`, { method: "DELETE" }),
+
+  servicos: () => pedirAdmin("/api/admin/servicos"),
+  criarServico: (dados) => pedirAdmin("/api/admin/servicos", { method: "POST", ...corpo(dados) }),
+  editarServico: (id, dados) =>
+    pedirAdmin(`/api/admin/servicos/${encodeURIComponent(id)}`, { method: "PATCH", ...corpo(dados) }),
+  removerServico: (id) =>
+    pedirAdmin(`/api/admin/servicos/${encodeURIComponent(id)}`, { method: "DELETE" }),
+
+  definirPreco: (servico, barbeiro, preco) =>
+    pedirAdmin("/api/admin/precos", { method: "PUT", ...corpo({ servico, barbeiro, preco }) }),
+  removerPreco: (servico, barbeiro) =>
+    pedirAdmin(
+      `/api/admin/precos/${encodeURIComponent(servico)}/${encodeURIComponent(barbeiro)}`,
+      { method: "DELETE" }
+    ),
+
+  expediente: () => pedirAdmin("/api/admin/expediente"),
+  salvarExpediente: (semana) =>
+    pedirAdmin("/api/admin/expediente", { method: "PUT", ...corpo({ semana }) }),
+
+  produtos: () => pedirAdmin("/api/admin/produtos"),
+  criarProduto: (dados) => pedirAdmin("/api/admin/produtos", { method: "POST", ...corpo(dados) }),
+  editarProduto: (id, dados) =>
+    pedirAdmin(`/api/admin/produtos/${encodeURIComponent(id)}`, { method: "PATCH", ...corpo(dados) }),
+  removerProduto: (id) =>
+    pedirAdmin(`/api/admin/produtos/${encodeURIComponent(id)}`, { method: "DELETE" }),
+
+  bloqueios: ({ de, dias = 60 } = {}) => pedirAdmin(`/api/admin/bloqueios?${query({ de, dias })}`),
+  criarBloqueio: (dados) => pedirAdmin("/api/admin/bloqueios", { method: "POST", ...corpo(dados) }),
+  removerBloqueio: (id) => pedirAdmin(`/api/admin/bloqueios/${id}`, { method: "DELETE" }),
 };

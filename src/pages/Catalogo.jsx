@@ -1,53 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImgSlot from "../components/ImgSlot";
+import { api } from "../api";
 
-const PRODUCTS = [
-  {
-    name: "Matte Cream",
-    price: 69,
-    tag: "cabelo",
-    desc: "Controle total, visual natural. Fixação seca, sem brilho.",
-  },
-  {
-    name: "Pomada Modeladora",
-    price: 59,
-    tag: "cabelo",
-    desc: "Base de água. Reativa com a mão úmida, sai no banho.",
-  },
-  {
-    name: "Óleo de Barba",
-    price: 45,
-    tag: "barba",
-    desc: "Amacia o fio e trata a pele por baixo. Três gotas bastam.",
-  },
-  {
-    name: "Balm Pós-Barba",
-    price: 39,
-    tag: "barba",
-    desc: "Fecha o poro depois da navalha. Sem álcool, sem ardência.",
-  },
-  {
-    name: "Shampoo Diário",
-    price: 49,
-    tag: "cuidado",
-    desc: "Limpa sem tirar a oleosidade que o couro precisa.",
-  },
-  {
-    name: "Kit Mosseri",
-    price: 149,
-    tag: "cuidado",
-    desc: "Matte Cream, óleo e balm. O básico bem resolvido.",
-  },
+// Os produtos moram no banco e são cadastrados na área gerencial: esta tela só
+// desenha o que a API devolver. Foto ainda não existe -- todos recebem o mesmo
+// espaço vazio, como no design original.
+const ABAS = [
+  ["Tudo", null],
+  ["Cabelo", "cabelo"],
+  ["Barba", "barba"],
+  ["Cuidado", "cuidado"],
 ];
 
-const TABS = ["Tudo", "Cabelo", "Barba", "Cuidado"];
-
 export default function Catalogo() {
-  const [tab, setTab] = useState("Tudo");
-  const filtered =
-    tab === "Tudo"
-      ? PRODUCTS
-      : PRODUCTS.filter((p) => p.tag === tab.toLowerCase());
+  const [aba, setAba] = useState("Tudo");
+  const [produtos, setProdutos] = useState(null);
+  const [erro, setErro] = useState(null);
+
+  useEffect(() => {
+    let vivo = true;
+    api.produtos()
+      .then((lista) => vivo && setProdutos(lista))
+      .catch((e) => vivo && setErro(e.message));
+    return () => { vivo = false; };
+  }, []);
+
+  const grupo = ABAS.find(([rotulo]) => rotulo === aba)?.[1] ?? null;
+  const visiveis = (produtos ?? []).filter((p) => !grupo || p.grupo === grupo);
 
   return (
     <>
@@ -59,13 +38,13 @@ export default function Catalogo() {
               <h1>O que fica com você.</h1>
             </div>
             <div className="tabs">
-              {TABS.map((t) => (
+              {ABAS.map(([rotulo]) => (
                 <button
-                  key={t}
-                  className={`tab ${tab === t ? "active" : ""}`}
-                  onClick={() => setTab(t)}
+                  key={rotulo}
+                  className={`tab ${aba === rotulo ? "active" : ""}`}
+                  onClick={() => setAba(rotulo)}
                 >
-                  {t}
+                  {rotulo}
                 </button>
               ))}
             </div>
@@ -74,19 +53,22 @@ export default function Catalogo() {
       </div>
 
       <div className="container">
+        {erro && <p className="form-erro">{erro}</p>}
+        {!produtos && !erro && <p className="hint">Carregando o catálogo…</p>}
+        {produtos && !visiveis.length && <p className="hint">Nada nessa prateleira por enquanto.</p>}
+
         <div className="product-grid">
-          {filtered.map((p) => (
-            <div className="product-card" key={p.name}>
-              <ImgSlot label={p.name} />
+          {visiveis.map((p) => (
+            <div className="product-card" key={p.id}>
+              <ImgSlot label={p.nome} />
               <div className="product-row">
-                <h3>{p.name}</h3>
-                <span className="price">R$ {p.price}</span>
+                <h3>{p.nome}</h3>
+                <span className="price">R$ {p.preco}</span>
               </div>
-              <p>{p.desc}</p>
+              <p>{p.descricao}</p>
             </div>
           ))}
         </div>
-        <p className="fine-print">Nomes e preços dos produtos são provisórios.</p>
       </div>
     </>
   );

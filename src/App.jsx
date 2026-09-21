@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Catalogo from "./pages/Catalogo";
 import Instagram from "./pages/Instagram";
 import Agendar from "./pages/Agendar";
+import Admin from "./pages/Admin";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/catalogo" element={<Catalogo />} />
         <Route path="/instagram" element={<Instagram />} />
         <Route path="/agendar" element={<Agendar />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
       <Footer />
     </BrowserRouter>
