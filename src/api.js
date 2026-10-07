@@ -174,6 +174,14 @@ export const admin = {
     pedirAdmin(`/api/admin/barbeiros/${encodeURIComponent(id)}`, { method: "PATCH", ...corpo(dados) }),
   removerBarbeiro: (id) =>
     pedirAdmin(`/api/admin/barbeiros/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  enviarFotoBarbeiro: (id, imagem) =>
+    pedirAdmin(`/api/admin/barbeiros/${encodeURIComponent(id)}/foto`, {
+      method: "PUT",
+      body: imagem,
+      headers: { "content-type": imagem.type || "image/jpeg" },
+    }),
+  removerFotoBarbeiro: (id) =>
+    pedirAdmin(`/api/admin/barbeiros/${encodeURIComponent(id)}/foto`, { method: "DELETE" }),
 
   servicos: () => pedirAdmin("/api/admin/servicos"),
   criarServico: (dados) => pedirAdmin("/api/admin/servicos", { method: "POST", ...corpo(dados) }),

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { admin } from "../../api";
+import { fotoBarbeiro } from "../../foto";
+import Foto from "./Foto";
 import { Erro, Estado } from "./Ui";
 import { useAcao, useRecurso } from "./comum";
 
@@ -7,8 +9,7 @@ function LinhaBarbeiro({ barbeiro, acao, aoMudar }) {
   const [rascunho, setRascunho] = useState(barbeiro);
   const sujo =
     rascunho.nome !== barbeiro.nome ||
-    rascunho.descricao !== barbeiro.descricao ||
-    rascunho.foto !== barbeiro.foto;
+    rascunho.descricao !== barbeiro.descricao;
 
   const campo = (nome) => ({
     value: rascunho[nome] ?? "",
@@ -20,7 +21,6 @@ function LinhaBarbeiro({ barbeiro, acao, aoMudar }) {
       admin.editarBarbeiro(barbeiro.id, {
         nome: rascunho.nome,
         descricao: rascunho.descricao,
-        foto: rascunho.foto ?? "",
       })
     );
     if (salvo) aoMudar();
@@ -42,6 +42,14 @@ function LinhaBarbeiro({ barbeiro, acao, aoMudar }) {
 
   return (
     <div className={`admin-linha empilha ${barbeiro.ativo ? "" : "inativa"}`}>
+      <Foto
+        nome={barbeiro.nome}
+        url={fotoBarbeiro(barbeiro.foto)}
+        acao={acao}
+        enviar={(imagem) => admin.enviarFotoBarbeiro(barbeiro.id, imagem)}
+        remover={() => admin.removerFotoBarbeiro(barbeiro.id)}
+        aoMudar={aoMudar}
+      />
       <div className="admin-form-campos">
         <label className="campo cresce">
           <span>Nome</span>
@@ -50,10 +58,6 @@ function LinhaBarbeiro({ barbeiro, acao, aoMudar }) {
         <label className="campo cresce">
           <span>Descrição</span>
           <input maxLength={120} {...campo("descricao")} />
-        </label>
-        <label className="campo">
-          <span>Foto (arquivo)</span>
-          <input maxLength={60} placeholder="sem foto" {...campo("foto")} />
         </label>
       </div>
       <div className="linha-acoes">
@@ -75,12 +79,12 @@ function LinhaBarbeiro({ barbeiro, acao, aoMudar }) {
   );
 }
 
-// A foto é o nome do arquivo em public/fotos (juan, thiago). Barbeiro sem foto
-// entra assim mesmo: a tela do cliente desenha as iniciais no lugar.
+// A foto entra depois de criado, pelo botão em cada barbeiro. Sem foto, a tela
+// do cliente desenha as iniciais no lugar.
 export default function PainelBarbeiros({ aoExpirar, aoMudarCatalogo }) {
   const { dados, erro, carregando, recarregar } = useRecurso(() => admin.barbeiros(), aoExpirar);
   const acao = useAcao(aoExpirar);
-  const [novo, setNovo] = useState({ nome: "", descricao: "", foto: "" });
+  const [novo, setNovo] = useState({ nome: "", descricao: "" });
 
   const atualizar = () => {
     recarregar();
@@ -93,11 +97,10 @@ export default function PainelBarbeiros({ aoExpirar, aoMudarCatalogo }) {
       admin.criarBarbeiro({
         nome: novo.nome.trim(),
         descricao: novo.descricao.trim(),
-        ...(novo.foto.trim() ? { foto: novo.foto.trim() } : {}),
       })
     );
     if (!criado) return;
-    setNovo({ nome: "", descricao: "", foto: "" });
+    setNovo({ nome: "", descricao: "" });
     atualizar();
   }
 
@@ -119,20 +122,13 @@ export default function PainelBarbeiros({ aoExpirar, aoMudarCatalogo }) {
               value={novo.descricao} onChange={(e) => setNovo({ ...novo, descricao: e.target.value })}
             />
           </label>
-          <label className="campo">
-            <span>Foto (opcional)</span>
-            <input
-              maxLength={60} placeholder="arquivo em /fotos"
-              value={novo.foto} onChange={(e) => setNovo({ ...novo, foto: e.target.value })}
-            />
-          </label>
           <button className="btn btn-primary" type="submit" disabled={acao.ocupado}>
             {acao.ocupado ? "Salvando…" : "Adicionar barbeiro"}
           </button>
         </div>
         <p className="hint">
           O novo barbeiro só aparece pro cliente depois de ganhar preço em algum serviço, na aba
-          Serviços e preços.
+          Serviços e preços. A foto entra depois, pelo botão no cartão dele.
         </p>
         <Erro>{acao.erro}</Erro>
       </form>

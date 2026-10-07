@@ -185,6 +185,13 @@ p {
   font-family: "Archivo", "Helvetica Neue", Arial, sans-serif;
 }
 
+/* No cabecalho a marca e 50% maior que o lockup base (13.5px -> 20.25px); o
+   simbolo acompanha porque a altura dele e em `em`. */
+.nav .logo {
+  font-size: 20.25px;
+  gap: 15px;
+}
+
 .logo-mark {
   flex-shrink: 0;
   display: inline-flex;
@@ -1840,9 +1847,12 @@ p {
   flex-wrap: wrap;
 }
 
+/* Grid, e nao flex em coluna: dentro de uma coluna flex o Chrome media a
+   altura da linha de campos como se eles quebrassem em duas linhas, e sobrava
+   um buraco em cima do Nome. */
 .admin-linha.empilha {
-  flex-direction: column;
-  align-items: stretch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
 }
 

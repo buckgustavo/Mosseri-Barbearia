@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { api, ErroApi } from "../api";
-import { foto } from "../foto";
+import { fotoBarbeiro } from "../foto";
 
 // Barbeiros, servicos, precos, expediente e horarios livres vem todos da API.
 // Esta tela nao decide nada de agenda: se um horario aparece, e porque o
@@ -387,10 +387,10 @@ export default function Agendar() {
                   disabled={Boolean(reserva)}
                 >
                   <span className="polaroid-foto">
-                    {/* Barbeiro cadastrado pela area gerencial pode nao ter foto
-                        em public/fotos: as iniciais seguram o lugar. */}
+                    {/* Barbeiro sem foto (nem enviada pelo painel, nem antiga
+                        em public/fotos): as iniciais seguram o lugar. */}
                     {b.foto ? (
-                      <img src={foto(b.foto)} alt={b.nome} />
+                      <img src={fotoBarbeiro(b.foto)} alt={b.nome} />
                     ) : (
                       <span className="polaroid-iniciais" aria-hidden="true">
                         {b.nome.split(" ").slice(0, 2).map((parte) => parte[0]).join("")}

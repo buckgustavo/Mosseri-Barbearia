@@ -2,59 +2,9 @@ import { useState } from "react";
 import { admin, urlDaApi } from "../../api";
 import { Erro, Estado } from "./Ui";
 import { useAcao, useRecurso } from "./comum";
-import { reduzirImagem } from "./imagem";
+import Foto from "./Foto";
 
 const GRUPOS = [["cabelo", "Cabelo"], ["barba", "Barba"], ["cuidado", "Cuidado"]];
-
-// Foto do produto. No celular o "Adicionar foto" abre a camera ou a galeria.
-function FotoProduto({ produto, acao, aoMudar }) {
-  const [enviando, setEnviando] = useState(false);
-
-  async function escolher(evento) {
-    const arquivo = evento.target.files?.[0];
-    evento.target.value = ""; // permite escolher o mesmo arquivo de novo
-    if (!arquivo) return;
-    setEnviando(true);
-    const imagem = await reduzirImagem(arquivo);
-    const feito = await acao.executar(() => admin.enviarFotoProduto(produto.id, imagem));
-    setEnviando(false);
-    if (feito) aoMudar();
-  }
-
-  async function remover() {
-    if (!window.confirm(`Tirar a foto de "${produto.nome}"?`)) return;
-    if (await acao.executar(() => admin.removerFotoProduto(produto.id))) aoMudar();
-  }
-
-  const rotulo = enviando ? "Enviando…" : produto.foto ? "Trocar foto" : "Adicionar foto";
-
-  return (
-    <div className="produto-foto">
-      {produto.foto ? (
-        <img src={urlDaApi(produto.foto)} alt={`Foto de ${produto.nome}`} />
-      ) : (
-        <div className="produto-foto-vazia" aria-hidden="true">sem foto</div>
-      )}
-      <div className="produto-foto-acoes">
-        <label className={`btn btn-outline btn-mini ${acao.ocupado ? "desativado" : ""}`}>
-          {rotulo}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/*"
-            onChange={escolher}
-            disabled={acao.ocupado}
-            hidden
-          />
-        </label>
-        {produto.foto && (
-          <button className="btn-linha" onClick={remover} disabled={acao.ocupado}>
-            Tirar foto
-          </button>
-        )}
-      </div>
-    </div>
-  );
-}
 
 function LinhaProduto({ produto, acao, aoMudar }) {
   const [rascunho, setRascunho] = useState(produto);
@@ -93,7 +43,14 @@ function LinhaProduto({ produto, acao, aoMudar }) {
 
   return (
     <div className={`admin-linha empilha ${produto.ativo ? "" : "inativa"}`}>
-      <FotoProduto produto={produto} acao={acao} aoMudar={aoMudar} />
+      <Foto
+        nome={produto.nome}
+        url={urlDaApi(produto.foto)}
+        acao={acao}
+        enviar={(imagem) => admin.enviarFotoProduto(produto.id, imagem)}
+        remover={() => admin.removerFotoProduto(produto.id)}
+        aoMudar={aoMudar}
+      />
       <div className="admin-form-campos">
         <label className="campo cresce">
           <span>Produto</span>
