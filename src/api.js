@@ -223,6 +223,25 @@ export const admin = {
   salvarAparencia: (escalaFonte) =>
     pedirAdmin("/api/admin/aparencia", { method: "PUT", ...corpo({ escalaFonte }) }),
 
+  // ------------------------------------------------ financeiro (centavos)
+  resumo: ({ de, ate }) => pedirAdmin(`/api/admin/financeiro/resumo?${query({ de, ate })}`),
+  atendimentos: ({ de, ate, situacao }) =>
+    pedirAdmin(`/api/admin/financeiro/atendimentos?${query({ de, ate, situacao })}`),
+  receber: (codigo, dados) =>
+    pedirAdmin(`/api/admin/agendamentos/${encodeURIComponent(codigo)}/pagamento`, { method: "PUT", ...corpo(dados) }),
+  desfazerPagamento: (codigo) =>
+    pedirAdmin(`/api/admin/agendamentos/${encodeURIComponent(codigo)}/pagamento`, { method: "DELETE" }),
+  estoque: () => pedirAdmin("/api/admin/estoque"),
+  editarEstoque: (id, dados) =>
+    pedirAdmin(`/api/admin/estoque/${encodeURIComponent(id)}`, { method: "PATCH", ...corpo(dados) }),
+  movimentos: ({ de, ate, produto }) =>
+    pedirAdmin(`/api/admin/estoque/movimentos?${query({ de, ate, produto })}`),
+  lancarMovimento: (dados) => pedirAdmin("/api/admin/estoque/movimentos", { method: "POST", ...corpo(dados) }),
+  desfazerMovimento: (id) => pedirAdmin(`/api/admin/estoque/movimentos/${id}`, { method: "DELETE" }),
+  despesas: ({ de, ate }) => pedirAdmin(`/api/admin/despesas?${query({ de, ate })}`),
+  criarDespesa: (dados) => pedirAdmin("/api/admin/despesas", { method: "POST", ...corpo(dados) }),
+  removerDespesa: (id) => pedirAdmin(`/api/admin/despesas/${id}`, { method: "DELETE" }),
+
   bloqueios: ({ de, dias = 60 } = {}) => pedirAdmin(`/api/admin/bloqueios?${query({ de, dias })}`),
   criarBloqueio: (dados) => pedirAdmin("/api/admin/bloqueios", { method: "POST", ...corpo(dados) }),
   removerBloqueio: (id) => pedirAdmin(`/api/admin/bloqueios/${id}`, { method: "DELETE" }),

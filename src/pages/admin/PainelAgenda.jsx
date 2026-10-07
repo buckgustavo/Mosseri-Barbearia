@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { admin } from "../../api";
 import { Erro, Estado } from "./Ui";
+import Receber from "./Receber";
 import {
-  dataLegivel, hojeLocal, linkWhatsapp, moeda, somaDias, telefoneLegivel, useAcao, useRecurso,
+  dataLegivel, hojeLocal, linkWhatsapp, moeda, reais, somaDias, telefoneLegivel, useAcao, useRecurso,
 } from "./comum";
 
 // O dia inteiro numa tela. É o que substitui abrir o banco na mão pra saber
@@ -63,6 +64,9 @@ export default function PainelAgenda({ aoExpirar }) {
             <span>
               <strong>{moeda(dados.receita)}</strong> no dia
             </span>
+            <span>
+              <strong>{reais(dados.recebidoCentavos)}</strong> recebido
+            </span>
             {dados.cancelados > 0 && <span className="apagado">{dados.cancelados} cancelada(s)</span>}
           </div>
         )}
@@ -108,9 +112,21 @@ export default function PainelAgenda({ aoExpirar }) {
               </div>
               <div className="reserva-acao">
                 {r.status === "confirmado" ? (
-                  <button className="btn-linha" onClick={() => cancelar(r)} disabled={acao.ocupado}>
-                    Cancelar
-                  </button>
+                  <>
+                    <Receber
+                      codigo={r.codigo}
+                      preco={r.preco * 100}
+                      pagamento={r.pagamento}
+                      acao={acao}
+                      aoMudar={recarregar}
+                    />
+                    {/* Pago não cancela: o dinheiro sumiria do caixa sem ninguém ver. */}
+                    {!r.pagamento && (
+                      <button className="btn-linha" onClick={() => cancelar(r)} disabled={acao.ocupado}>
+                        Cancelar
+                      </button>
+                    )}
+                  </>
                 ) : (
                   <span className="pill">cancelada</span>
                 )}

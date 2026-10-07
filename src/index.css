@@ -2334,3 +2334,310 @@ html[data-nav-compacta] .nav-menu {
 .aparencia .linha-acoes {
   justify-content: flex-start;
 }
+
+/* ------------------------------------------------ Area gerencial: Financeiro
+   Números grandes primeiro (a pergunta é "como estamos?"), detalhe embaixo.
+   Uma cor só nas barras: o comprimento é o dado; texto fica nos tokens de
+   texto, nunca na cor da barra. */
+.periodo-atalhos {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.periodo-atalhos .tab,
+.bloco-cabeca .tab {
+  padding: 7px 12px;
+}
+
+.numeros {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.numero {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  padding: 14px 16px;
+}
+
+.numero > * {
+  margin-top: 0;
+}
+
+.numero-rotulo {
+  font-size: calc(13.5px * var(--escala-fonte));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.numero-valor {
+  font-size: calc(26px * var(--escala-fonte));
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.numero-detalhe {
+  font-size: calc(14.5px * var(--escala-fonte));
+  color: var(--text-muted);
+}
+
+.numero.destaque {
+  border-color: var(--blue);
+  background: var(--blue-deep);
+}
+
+.numero.negativo .numero-valor {
+  color: #ef8a8a;
+}
+
+.numero.alerta {
+  border-color: #6b4a1f;
+  background: #1d1608;
+}
+
+.blocos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 10px;
+}
+
+.bloco {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.blocos .bloco {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+  padding: 14px 16px;
+  margin-top: 0;
+}
+
+.bloco-cabeca {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.bloco-titulo {
+  margin: 0;
+  font-size: calc(15px * var(--escala-fonte));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.barras {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.barra > * {
+  margin-top: 0;
+}
+
+.barra-topo {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: calc(15.5px * var(--escala-fonte));
+}
+
+.barra-topo strong {
+  font-variant-numeric: tabular-nums;
+}
+
+.barra-trilho {
+  height: 6px;
+  margin-top: 4px;
+  border-radius: 3px;
+  background: var(--bg-elev-2);
+}
+
+.barra-cheia {
+  height: 100%;
+  min-width: 2px;
+  border-radius: 3px;
+  background: var(--blue-bright);
+}
+
+.valor {
+  font-variant-numeric: tabular-nums;
+}
+
+.valor.saida {
+  color: var(--text-muted);
+}
+
+/* Receber: valor + um botão por forma de pagamento; tocar na forma confirma. */
+.receber {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.receber > *,
+.reserva-acao > * {
+  margin-top: 0;
+}
+
+.reserva-acao {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.receber .btn-linha {
+  width: auto;
+  margin-top: 0;
+}
+
+.receber-valor {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-muted);
+}
+
+.receber-valor input {
+  width: 90px;
+  font: inherit;
+  font-size: calc(16px * var(--escala-fonte));
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+}
+
+.pill.pago {
+  border-style: solid;
+  border-color: var(--blue);
+  color: var(--text);
+}
+
+/* Estoque */
+.estoque-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.estoque-topo > *,
+.estoque-nome > *,
+.estoque-saldo > *,
+.estoque-fatos > * {
+  margin-top: 0;
+}
+
+.estoque-nome {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: calc(17.5px * var(--escala-fonte));
+}
+
+.estoque-saldo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-variant-numeric: tabular-nums;
+}
+
+.estoque-saldo strong {
+  font-size: calc(26px * var(--escala-fonte));
+  line-height: 1;
+}
+
+.estoque-saldo span {
+  font-size: calc(13.5px * var(--escala-fonte));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.estoque-saldo.baixo strong,
+.estoque-saldo.baixo span {
+  color: #e8b061;
+}
+
+.admin-form-campos .campo input[inputmode] {
+  max-width: 140px;
+}
+
+.estoque-fatos {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  flex: 1 1 260px;
+  align-self: center;
+  font-size: calc(15px * var(--escala-fonte));
+  color: var(--text-muted);
+}
+
+.estoque-fatos strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.estoque-acoes {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.lancar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px dashed var(--border-dashed);
+  padding-top: 12px;
+}
+
+@media (max-width: 860px) {
+  .reserva-acao {
+    align-items: flex-end;
+  }
+  .admin-form-campos .campo input[inputmode] {
+    max-width: none;
+  }
+  .numero-valor {
+    font-size: calc(22px * var(--escala-fonte));
+  }
+}
+
+/* Botão de linha solto numa linha de lista fica do tamanho do texto, não da
+   linha inteira. */
+.admin-linha > .btn-linha {
+  width: auto;
+  margin-top: 0;
+}
+
+/* Na agenda a coluna de ação é estreita: "Pago · forma · valor" e o desfazer
+   quebram em duas linhas em vez de espremer o nome do cliente. */
+.reserva-acao .receber {
+  max-width: 250px;
+}
+
+.estoque-acoes .btn-salvar {
+  margin-left: auto;
+}

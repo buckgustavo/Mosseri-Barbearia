@@ -3,7 +3,9 @@ import { admin, api } from "../api";
 import PainelAgenda from "./admin/PainelAgenda";
 import PainelAparencia from "./admin/PainelAparencia";
 import PainelBarbeiros from "./admin/PainelBarbeiros";
+import PainelEstoque from "./admin/PainelEstoque";
 import PainelExpediente from "./admin/PainelExpediente";
+import PainelFinanceiro from "./admin/PainelFinanceiro";
 import PainelFolgas from "./admin/PainelFolgas";
 import PainelProdutos from "./admin/PainelProdutos";
 import PainelServicos from "./admin/PainelServicos";
@@ -11,6 +13,8 @@ import { Erro } from "./admin/Ui";
 
 const ABAS = [
   ["agenda", "Agenda do dia"],
+  ["financeiro", "Financeiro"],
+  ["estoque", "Estoque"],
   ["folgas", "Folgas e feriados"],
   ["barbeiros", "Barbeiros"],
   ["servicos", "Serviços e preços"],
@@ -203,6 +207,8 @@ export default function Admin() {
         </div>
 
         {aba === "agenda" && <PainelAgenda aoExpirar={aoExpirar} />}
+        {aba === "financeiro" && <PainelFinanceiro aoExpirar={aoExpirar} />}
+        {aba === "estoque" && <PainelEstoque aoExpirar={aoExpirar} />}
         {aba === "folgas" && <PainelFolgas aoExpirar={aoExpirar} barbeiros={barbeiros} />}
         {aba === "barbeiros" && <PainelBarbeiros {...comum} />}
         {aba === "servicos" && <PainelServicos {...comum} />}
