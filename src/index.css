@@ -468,16 +468,8 @@ p {
   color: var(--text);
 }
 
-.nav-menu a.nav-menu-restrito {
+.nav-menu a:last-child {
   border-bottom: 0;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-dim);
-}
-
-.footer-links a.footer-restrito {
-  margin-top: 6px;
-  color: var(--text-dim);
 }
 
 @media (max-width: 720px) {

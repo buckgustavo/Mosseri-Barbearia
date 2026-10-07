@@ -117,6 +117,16 @@ export default function Admin() {
 
   const aoExpirar = useCallback(() => setSessao("fora"), []);
 
+  // A area gerencial nao tem link no site e nao deve aparecer em busca: quem
+  // usa chega pelo endereco salvo. O noindex vale enquanto a pagina esta aberta.
+  useEffect(() => {
+    const meta = document.createElement("meta");
+    meta.name = "robots";
+    meta.content = "noindex, nofollow";
+    document.head.appendChild(meta);
+    return () => meta.remove();
+  }, []);
+
   useEffect(() => {
     if (!admin.temToken()) return setSessao("fora");
     admin.conferir().then(

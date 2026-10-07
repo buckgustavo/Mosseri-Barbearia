@@ -63,9 +63,6 @@ export default function Navbar() {
               {l.label}
             </NavLink>
           ))}
-          <NavLink to="/admin" className="nav-menu-restrito">
-            Área da barbearia
-          </NavLink>
         </nav>
       )}
     </header>
