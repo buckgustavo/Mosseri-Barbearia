@@ -11,6 +11,10 @@ import '@fontsource/archivo/800.css'
 import '@fontsource/caveat/600.css'
 import './index.css'
 import App from './App.jsx'
+import { iniciarAparencia } from './aparencia'
+
+// Antes de desenhar: o tamanho das letras ja vem certo na primeira pintura.
+iniciarAparencia()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

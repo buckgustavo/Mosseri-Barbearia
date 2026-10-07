@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { admin, api } from "../api";
 import PainelAgenda from "./admin/PainelAgenda";
+import PainelAparencia from "./admin/PainelAparencia";
 import PainelBarbeiros from "./admin/PainelBarbeiros";
 import PainelExpediente from "./admin/PainelExpediente";
 import PainelFolgas from "./admin/PainelFolgas";
@@ -15,6 +16,7 @@ const ABAS = [
   ["servicos", "Serviços e preços"],
   ["expediente", "Expediente"],
   ["produtos", "Produtos"],
+  ["aparencia", "Aparência"],
 ];
 
 function Entrar({ aoEntrar }) {
@@ -206,6 +208,7 @@ export default function Admin() {
         {aba === "servicos" && <PainelServicos {...comum} />}
         {aba === "expediente" && <PainelExpediente {...comum} />}
         {aba === "produtos" && <PainelProdutos aoExpirar={aoExpirar} />}
+        {aba === "aparencia" && <PainelAparencia aoExpirar={aoExpirar} />}
       </div>
     </>
   );

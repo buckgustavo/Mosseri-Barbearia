@@ -47,6 +47,8 @@ export const api = {
 
   produtos: () => pedir("/api/produtos"),
 
+  aparencia: () => pedir("/api/aparencia"),
+
   servicos: (barbeiro) => pedir(`/api/servicos?${query({ barbeiro })}`),
 
   expediente: () => pedir("/api/expediente"),
@@ -217,6 +219,9 @@ export const admin = {
     }),
   removerFotoProduto: (id) =>
     pedirAdmin(`/api/admin/produtos/${encodeURIComponent(id)}/foto`, { method: "DELETE" }),
+
+  salvarAparencia: (escalaFonte) =>
+    pedirAdmin("/api/admin/aparencia", { method: "PUT", ...corpo({ escalaFonte }) }),
 
   bloqueios: ({ de, dias = 60 } = {}) => pedirAdmin(`/api/admin/bloqueios?${query({ de, dias })}`),
   criarBloqueio: (dados) => pedirAdmin("/api/admin/bloqueios", { method: "POST", ...corpo(dados) }),
