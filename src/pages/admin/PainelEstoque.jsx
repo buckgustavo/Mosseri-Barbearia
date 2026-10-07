@@ -163,8 +163,7 @@ function LinhaEstoque({ produto, acao, aoMudar }) {
 
 const ROTULO_TIPO = { entrada: "entrada", venda: "venda", perda: "perda", ajuste: "contagem" };
 
-function Movimentos({ chave, aoExpirar, aoMudar }) {
-  const [periodo, setPeriodo] = useState(periodoPronto("mes"));
+function Movimentos({ periodo, chave, aoExpirar, aoMudar }) {
   const { dados, erro, carregando, recarregar } = useRecurso(
     () => admin.movimentos(periodo),
     aoExpirar,
@@ -183,7 +182,6 @@ function Movimentos({ chave, aoExpirar, aoMudar }) {
   return (
     <div className="bloco">
       <h3 className="bloco-titulo">Movimentações</h3>
-      <Periodo periodo={periodo} setPeriodo={setPeriodo} />
       <Erro>{erro || acao.erro}</Erro>
       <Estado carregando={carregando} vazio={dados && !dados.movimentos.length ? "Nada lançado no período." : null}>
         <div className="admin-lista">
@@ -225,6 +223,8 @@ export default function PainelEstoque({ aoExpirar }) {
   const { dados, erro, carregando, recarregar } = useRecurso(() => admin.estoque(), aoExpirar);
   const acao = useAcao(aoExpirar);
   const [versao, setVersao] = useState(0);
+  // O período vale para as movimentações; o saldo e o custo são sempre os de hoje.
+  const [periodo, setPeriodo] = useState(periodoPronto("mes"));
   const mudou = () => {
     recarregar();
     setVersao((v) => v + 1);
@@ -232,6 +232,7 @@ export default function PainelEstoque({ aoExpirar }) {
 
   return (
     <div className="admin-painel">
+      <Periodo periodo={periodo} setPeriodo={setPeriodo} />
       {dados && (
         <div className="numeros">
           <div className="numero">
@@ -270,7 +271,7 @@ export default function PainelEstoque({ aoExpirar }) {
         </div>
       </Estado>
 
-      <Movimentos chave={versao} aoExpirar={aoExpirar} aoMudar={recarregar} />
+      <Movimentos periodo={periodo} chave={versao} aoExpirar={aoExpirar} aoMudar={recarregar} />
 
       <p className="hint">
         O custo é médio: cada entrada recalcula a média do que está na prateleira, e cada venda

@@ -65,7 +65,10 @@ function Resumo({ r }) {
         <Numero
           rotulo="Serviços recebidos"
           valor={reais(r.servicos.recebido)}
-          detalhe={`${r.servicos.atendimentos} atendimento(s) · ticket ${reais(r.servicos.ticketMedio)}`}
+          detalhe={
+            `${r.servicos.atendimentos} atendimento(s) · ticket ${reais(r.servicos.ticketMedio)}` +
+            (r.servicos.descontos ? ` · ${reais(r.servicos.descontos)} em desconto` : "")
+          }
         />
         <Numero
           rotulo="Produtos vendidos"
@@ -92,7 +95,10 @@ function Resumo({ r }) {
         <Numero
           rotulo="A receber"
           valor={reais(r.aReceber.valor)}
-          detalhe={`${r.aReceber.atendimentos} atendimento(s) sem pagamento`}
+          detalhe={
+            `${r.aReceber.atendimentos} atendimento(s) em aberto` +
+            (r.aReceber.parciais ? `, ${r.aReceber.parciais} pago(s) em parte` : "")
+          }
           tom={r.aReceber.atendimentos ? "alerta" : ""}
         />
       </div>
@@ -140,7 +146,7 @@ function Atendimentos({ periodo, aoExpirar, aoMudar }) {
       <div className="bloco-cabeca">
         <h3 className="bloco-titulo">Atendimentos</h3>
         <div className="tabs">
-          {[["pendente", "A receber"], ["pago", "Pagos"], ["todos", "Todos"]].map(([id, rotulo]) => (
+          {[["pendente", "A receber"], ["parcial", "Em parte"], ["pago", "Pagos"], ["todos", "Todos"]].map(([id, rotulo]) => (
             <button key={id} className={`tab ${situacao === id ? "active" : ""}`} onClick={() => setSituacao(id)}>
               {rotulo}
             </button>
@@ -152,7 +158,8 @@ function Atendimentos({ periodo, aoExpirar, aoMudar }) {
         carregando={carregando}
         vazio={
           dados && !dados.atendimentos.length
-            ? situacao === "pendente" ? "Nada a receber no período." : "Nenhum atendimento aqui."
+            ? { pendente: "Nada a receber no período.", parcial: "Nenhum atendimento pago só em parte." }[situacao] ??
+              "Nenhum atendimento aqui."
             : null
         }
       >
@@ -162,10 +169,10 @@ function Atendimentos({ periodo, aoExpirar, aoMudar }) {
               <div className="linha-principal">
                 <strong>{dataLegivel(a.data)} {a.horario}</strong>
                 <span>{a.cliente}</span>
-                <span className="apagado">{a.servico.nome} · {a.barbeiro.nome} · {reais(a.preco)}</span>
+                <span className="apagado">{a.servico.nome} · {a.barbeiro.nome} · {reais(a.financeiro.preco)}</span>
                 {!a.aconteceu && <span className="pill">ainda vai acontecer</span>}
               </div>
-              <Receber codigo={a.codigo} preco={a.preco} pagamento={a.pagamento} acao={acao} aoMudar={mudou} />
+              <Receber codigo={a.codigo} conta={a.financeiro} acao={acao} aoMudar={mudou} />
             </div>
           ))}
         </div>

@@ -227,10 +227,11 @@ export const admin = {
   resumo: ({ de, ate }) => pedirAdmin(`/api/admin/financeiro/resumo?${query({ de, ate })}`),
   atendimentos: ({ de, ate, situacao }) =>
     pedirAdmin(`/api/admin/financeiro/atendimentos?${query({ de, ate, situacao })}`),
+  // Cada chamada registra uma parte; `quitar` transforma o resto em desconto.
   receber: (codigo, dados) =>
-    pedirAdmin(`/api/admin/agendamentos/${encodeURIComponent(codigo)}/pagamento`, { method: "PUT", ...corpo(dados) }),
-  desfazerPagamento: (codigo) =>
-    pedirAdmin(`/api/admin/agendamentos/${encodeURIComponent(codigo)}/pagamento`, { method: "DELETE" }),
+    pedirAdmin(`/api/admin/agendamentos/${encodeURIComponent(codigo)}/pagamentos`, { method: "POST", ...corpo(dados) }),
+  desfazerPagamento: (codigo, id) =>
+    pedirAdmin(`/api/admin/agendamentos/${encodeURIComponent(codigo)}/pagamentos/${id}`, { method: "DELETE" }),
   estoque: () => pedirAdmin("/api/admin/estoque"),
   editarEstoque: (id, dados) =>
     pedirAdmin(`/api/admin/estoque/${encodeURIComponent(id)}`, { method: "PATCH", ...corpo(dados) }),

@@ -113,15 +113,9 @@ export default function PainelAgenda({ aoExpirar }) {
               <div className="reserva-acao">
                 {r.status === "confirmado" ? (
                   <>
-                    <Receber
-                      codigo={r.codigo}
-                      preco={r.preco * 100}
-                      pagamento={r.pagamento}
-                      acao={acao}
-                      aoMudar={recarregar}
-                    />
-                    {/* Pago não cancela: o dinheiro sumiria do caixa sem ninguém ver. */}
-                    {!r.pagamento && (
+                    <Receber codigo={r.codigo} conta={r.financeiro} acao={acao} aoMudar={recarregar} />
+                    {/* Com pagamento não cancela: o dinheiro sumiria do caixa sem ninguém ver. */}
+                    {!r.financeiro.pagamentos.length && (
                       <button className="btn-linha" onClick={() => cancelar(r)} disabled={acao.ocupado}>
                         Cancelar
                       </button>
