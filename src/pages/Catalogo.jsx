@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import ImgSlot from "../components/ImgSlot";
-import { api } from "../api";
+import { api, urlDaApi } from "../api";
 
 // Os produtos moram no banco e são cadastrados na área gerencial: esta tela só
-// desenha o que a API devolver. Foto ainda não existe -- todos recebem o mesmo
-// espaço vazio, como no design original.
+// desenha o que a API devolver. Produto sem foto recebe o espaço vazio do
+// design original.
 const ABAS = [
   ["Tudo", null],
   ["Cabelo", "cabelo"],
@@ -60,7 +60,11 @@ export default function Catalogo() {
         <div className="product-grid">
           {visiveis.map((p) => (
             <div className="product-card" key={p.id}>
-              <ImgSlot label={p.nome} />
+              {p.foto ? (
+                <img className="product-foto" src={urlDaApi(p.foto)} alt={p.nome} loading="lazy" />
+              ) : (
+                <ImgSlot />
+              )}
               <div className="product-row">
                 <h3>{p.nome}</h3>
                 <span className="price">R$ {p.preco}</span>

@@ -974,6 +974,15 @@ p {
   aspect-ratio: 1;
 }
 
+.product-foto {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--radius);
+  background: var(--bg-elev);
+}
+
 .product-row {
   display: flex;
   justify-content: space-between;
@@ -1849,6 +1858,54 @@ p {
   gap: 12px;
   flex-wrap: wrap;
   font-size: 13px;
+}
+
+.produto-foto {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.produto-foto img,
+.produto-foto-vazia {
+  width: 72px;
+  height: 72px;
+  flex: 0 0 72px;
+  border-radius: var(--radius);
+  object-fit: cover;
+  background: var(--bg);
+}
+
+.produto-foto-vazia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border-dashed);
+  font-size: 10px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.produto-foto-acoes {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.produto-foto-acoes .btn {
+  cursor: pointer;
+}
+
+.produto-foto-acoes .btn.desativado {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.produto-foto-acoes .btn-linha {
+  width: auto;
+  margin-top: 0;
 }
 
 .linha-acoes {

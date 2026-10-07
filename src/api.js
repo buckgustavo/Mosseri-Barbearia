@@ -6,6 +6,10 @@
 // outro host, entao o build precisa da variavel.
 const BASE = (import.meta.env.VITE_API_URL ?? "").replace(/\/$/, "");
 
+// Fotos vem da API como caminho ("/api/fotos/..."): no Pages a API mora em
+// outro host, entao o endereco completo leva a BASE na frente.
+export const urlDaApi = (caminho) => (caminho ? BASE + caminho : null);
+
 export class ErroApi extends Error {
   constructor(mensagem, codigo, status) {
     super(mensagem);
@@ -196,6 +200,15 @@ export const admin = {
     pedirAdmin(`/api/admin/produtos/${encodeURIComponent(id)}`, { method: "PATCH", ...corpo(dados) }),
   removerProduto: (id) =>
     pedirAdmin(`/api/admin/produtos/${encodeURIComponent(id)}`, { method: "DELETE" }),
+  // A imagem vai crua no corpo, com o tipo dela no Content-Type.
+  enviarFotoProduto: (id, imagem) =>
+    pedirAdmin(`/api/admin/produtos/${encodeURIComponent(id)}/foto`, {
+      method: "PUT",
+      body: imagem,
+      headers: { "content-type": imagem.type || "image/jpeg" },
+    }),
+  removerFotoProduto: (id) =>
+    pedirAdmin(`/api/admin/produtos/${encodeURIComponent(id)}/foto`, { method: "DELETE" }),
 
   bloqueios: ({ de, dias = 60 } = {}) => pedirAdmin(`/api/admin/bloqueios?${query({ de, dias })}`),
   criarBloqueio: (dados) => pedirAdmin("/api/admin/bloqueios", { method: "POST", ...corpo(dados) }),
