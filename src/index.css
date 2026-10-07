@@ -381,11 +381,119 @@ p {
   line-height: 1.65;
 }
 
+/* Botao do menu: tres tracos desenhados em CSS que viram um X quando aberto.
+   So aparece onde a barra de links nao cabe. */
+.nav-botao {
+  display: none;
+  width: 44px;
+  height: 44px;
+  margin-right: -10px;
+  background: none;
+  border: 0;
+  color: var(--text);
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-botao span,
+.nav-botao span::before,
+.nav-botao span::after {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.nav-botao span {
+  position: relative;
+}
+
+.nav-botao span::before,
+.nav-botao span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+}
+
+.nav-botao span::before {
+  top: -6px;
+}
+
+.nav-botao span::after {
+  top: 6px;
+}
+
+.nav-aberto .nav-botao span {
+  background: transparent;
+}
+
+.nav-aberto .nav-botao span::before {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.nav-aberto .nav-botao span::after {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.nav-botao:focus-visible {
+  outline: 2px solid var(--blue-bright);
+  outline-offset: -4px;
+}
+
+.nav-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 8px var(--gutter) 20px;
+  border-top: 1px solid var(--border);
+}
+
+.nav-menu .btn {
+  margin: 8px 0 6px;
+}
+
+.nav-menu a:not(.btn) {
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.nav-menu a.active:not(.btn) {
+  color: var(--text);
+}
+
+.nav-menu a.nav-menu-restrito {
+  border-bottom: 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.footer-links a.footer-restrito {
+  margin-top: 6px;
+  color: var(--text-dim);
+}
+
 @media (max-width: 720px) {
   .footer-grid {
     grid-template-columns: 1fr 1fr;
   }
   .nav-links {
+    display: none;
+  }
+  .nav-botao {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 721px) {
+  .nav-menu {
     display: none;
   }
 }
@@ -2014,9 +2122,71 @@ p {
   letter-spacing: 0.06em;
 }
 
+.celula {
+  display: block;
+}
+
+.celula-rotulo {
+  display: none;
+}
+
+.admin-datas .admin-seta {
+  padding: 9px 14px;
+  font-size: 16px;
+  line-height: 1;
+}
+
 @media (max-width: 860px) {
   .grade-linha {
     grid-template-columns: 1fr;
+  }
+  .grade-linha.cabecalho {
+    display: none;
+  }
+  /* Preco com o nome do barbeiro ao lado, um por linha. */
+  .celula {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .celula-rotulo {
+    display: block;
+    flex: 0 0 72px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  /* Abas numa linha so, rolando de lado, em vez de tres linhas de botoes
+     empurrando a agenda pra baixo da dobra. */
+  .admin-abas {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin: 4px calc(-1 * var(--gutter)) 18px;
+    padding: 0 var(--gutter);
+    scroll-padding: 0 var(--gutter);
+  }
+  .admin-abas::-webkit-scrollbar {
+    display: none;
+  }
+  .admin-abas .tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+  .admin-datas {
+    width: 100%;
+  }
+  .admin-datas input[type="date"] {
+    flex: 1;
+    min-width: 0;
+  }
+  .admin-cabeca {
+    padding: 24px 0 18px;
+  }
+  .admin-cabeca h1 {
+    font-size: 20px;
   }
   .admin-reserva {
     grid-template-columns: 60px 1fr;

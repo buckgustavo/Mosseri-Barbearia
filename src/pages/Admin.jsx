@@ -149,7 +149,7 @@ export default function Admin() {
 
   return (
     <>
-      <div className="page-head">
+      <div className="page-head admin-cabeca">
         <div className="container">
           <div className="page-head-row">
             <div>
@@ -179,7 +179,11 @@ export default function Admin() {
             <button
               key={id}
               className={`tab ${aba === id ? "active" : ""}`}
-              onClick={() => setAba(id)}
+              onClick={(e) => {
+                setAba(id);
+                // No celular as abas rolam de lado: a escolhida vem pra vista.
+                e.currentTarget.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" });
+              }}
             >
               {rotulo}
             </button>

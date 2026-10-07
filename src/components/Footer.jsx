@@ -31,6 +31,7 @@ export default function Footer() {
           <Link to="/agendar">Agendar</Link>
           <Link to="/catalogo">Catálogo</Link>
           <Link to="/instagram">Instagram</Link>
+          <Link to="/admin" className="footer-restrito">Área da barbearia</Link>
         </div>
       </div>
 

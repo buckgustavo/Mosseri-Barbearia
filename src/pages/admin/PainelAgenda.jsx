@@ -31,8 +31,12 @@ export default function PainelAgenda({ aoExpirar }) {
     <div className="admin-painel">
       <div className="admin-barra">
         <div className="admin-datas">
-          <button className="btn btn-outline" onClick={() => setData((d) => somaDias(d, -1))}>
-            ‹ Dia
+          <button
+            className="btn btn-outline admin-seta"
+            onClick={() => setData((d) => somaDias(d, -1))}
+            aria-label="Dia anterior"
+          >
+            ‹
           </button>
           <input
             type="date"
@@ -40,8 +44,12 @@ export default function PainelAgenda({ aoExpirar }) {
             onChange={(e) => setData(e.target.value || hojeLocal())}
             aria-label="Dia da agenda"
           />
-          <button className="btn btn-outline" onClick={() => setData((d) => somaDias(d, 1))}>
-            Dia ›
+          <button
+            className="btn btn-outline admin-seta"
+            onClick={() => setData((d) => somaDias(d, 1))}
+            aria-label="Próximo dia"
+          >
+            ›
           </button>
           <button className="btn btn-outline" onClick={() => setData(hojeLocal())}>
             Hoje

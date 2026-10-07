@@ -22,18 +22,23 @@ function CelulaPreco({ servico, barbeiro, preco, acao, aoMudar }) {
     else setValor(preco ?? "");
   }
 
+  // No celular a grade vira uma coluna e o cabecalho com os nomes some: o nome
+  // do barbeiro vem junto de cada preco, senao "40" e "35" nao dizem de quem sao.
   return (
-    <input
-      className="celula-preco"
-      inputMode="numeric"
-      value={valor}
-      placeholder="—"
-      aria-label={`Preço de ${servico.nome} com ${barbeiro.nome}`}
-      onChange={(e) => setValor(e.target.value.replace(/\D/g, ""))}
-      onBlur={salvar}
-      onKeyDown={(e) => e.key === "Enter" && e.target.blur()}
-      disabled={acao.ocupado}
-    />
+    <label className="celula">
+      <span className="celula-rotulo">{barbeiro.nome}</span>
+      <input
+        className="celula-preco"
+        inputMode="numeric"
+        value={valor}
+        placeholder="—"
+        aria-label={`Preço de ${servico.nome} com ${barbeiro.nome}`}
+        onChange={(e) => setValor(e.target.value.replace(/\D/g, ""))}
+        onBlur={salvar}
+        onKeyDown={(e) => e.key === "Enter" && e.target.blur()}
+        disabled={acao.ocupado}
+      />
+    </label>
   );
 }
 
