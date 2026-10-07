@@ -51,9 +51,14 @@ export const api = {
     pedir(`/api/disponibilidade?${query({ barbeiro, servico, de, dias })}`),
 
   // O par codigo+telefone e a unica chave da reserva: o codigo sozinho e curto
-  // demais. Vem digitado pelo cliente, entao vai codificado na URL.
+  // demais. Vai no corpo de um POST, nunca na URL -- URL acaba em log de
+  // servidor, de proxy e no historico do navegador.
   consultar: (codigo, telefone) =>
-    pedir(`/api/agendamentos/${encodeURIComponent(codigo.trim())}?${query({ telefone })}`),
+    pedir("/api/agendamentos/consulta", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ codigo: codigo.trim(), telefone }),
+    }),
 
   agendar: (reserva) =>
     pedir("/api/agendamentos", {
@@ -63,8 +68,10 @@ export const api = {
     }),
 
   cancelar: (codigo, telefone) =>
-    pedir(`/api/agendamentos/${encodeURIComponent(codigo.trim())}?${query({ telefone })}`, {
-      method: "DELETE",
+    pedir("/api/agendamentos/cancelamento", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ codigo: codigo.trim(), telefone }),
     }),
 };
 

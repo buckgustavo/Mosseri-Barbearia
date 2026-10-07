@@ -1,0 +1,63 @@
+# Publica o site no GitHub Pages a cada push na main.
+#
+# Antes do primeiro uso, no repositorio:
+#   Settings > Pages > Source: "GitHub Actions"
+#   Settings > Secrets and variables > Actions > Variables:
+#     VITE_API_URL = https://api.<dominio>      (obrigatoria: sem ela o agendamento nao funciona)
+#     VITE_BASE    = /                          (so com dominio proprio; sem ela fica /Mosseri-Barbearia/)
+#
+# VITE_* vai parar dentro do JavaScript publicado: e configuracao publica,
+# nunca segredo.
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Escrita no Pages so no job de deploy: o build roda npm ci (codigo de
+# dependencias) e nao precisa de permissao nenhuma alem de ler o repositorio.
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - name: Build
+        run: |
+          if [ -z "$VITE_API_URL" ]; then
+            echo "::error::Defina a variavel VITE_API_URL no repositorio."
+            exit 1
+          fi
+          npm run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_BASE: ${{ vars.VITE_BASE }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

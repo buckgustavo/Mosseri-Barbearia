@@ -1,4 +1,5 @@
 import Logo from "../components/Logo";
+import CtaAgenda from "../components/CtaAgenda";
 import { foto } from "../foto";
 
 const POSTS = [
@@ -63,6 +64,8 @@ export default function Instagram() {
           Ver o feed completo
         </a>
       </div>
+
+      <CtaAgenda />
     </>
   );
 }

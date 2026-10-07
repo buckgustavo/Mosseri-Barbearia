@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -10,7 +10,36 @@ import "leaflet/dist/leaflet.css";
 // os dois numeros abaixo. E o unico ponto do codigo que precisa mudar.
 const POSICAO = [-21.3373043, -47.7491244];
 
+// O mapa so busca tiles depois que o visitante pede. Carregar sozinho mandaria
+// o IP de todo mundo que abre a home pros servidores da Esri, sem aviso. Ate o
+// clique, o cartao e desenhado em CSS (nenhuma imagem de terceiro), com o pino
+// e o endereco; o link "Aqui no mapa", na Home, continua levando ao Google Maps.
 export default function MiniMapa() {
+  const [ativo, setAtivo] = useState(false);
+
+  if (!ativo) {
+    return (
+      <div className="mapa-canvas mapa-estatico">
+        <span className="mapa-estatico-pino" aria-hidden="true">
+          <span className="mapa-pino-halo"></span>
+          <span className="mapa-pino-ponto"></span>
+        </span>
+        <p className="mapa-estatico-endereco">
+          Av. Pedro Duarte Amoroso, 622B
+          <br />
+          Jardim Itamarati
+        </p>
+        <button type="button" className="mapa-estatico-botao" onClick={() => setAtivo(true)}>
+          Mostrar mapa
+        </button>
+        <span className="mapa-estatico-aviso">Carrega imagens da Esri e do OpenStreetMap.</span>
+      </div>
+    );
+  }
+  return <MapaInterativo />;
+}
+
+function MapaInterativo() {
   const caixa = useRef(null);
 
   useEffect(() => {
@@ -27,14 +56,19 @@ export default function MiniMapa() {
       keyboard: false,
     });
 
-    // Tiles escuros da CARTO, sem chave de API, no mesmo tom do tema
+    // Tiles escuros do Esri Dark Gray Canvas, sem chave de API.
+    // Antes isto era o dark_all da CARTO, que passou a exigir chave e devolve
+    // um tile com "API KEY REQUIRED" escrito em cima no lugar do mapa.
+    // ATENCAO: este servico so tem imagem ate o zoom 16, que e o zoom fixo
+    // deste cartao. Se um dia o mapa for liberado para navegar, trocar de
+    // provedor: acima de 16 ele devolve tile de "sem dados".
+    // A ordem do caminho e {z}/{y}/{x}, invertida em relacao ao padrao.
     L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+      "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
       {
-        subdomains: "abcd",
-        maxZoom: 19,
+        maxZoom: 16,
         attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; Esri',
       }
     ).addTo(mapa);
 

@@ -33,6 +33,10 @@ export default function Footer() {
           <Link to="/instagram">Instagram</Link>
         </div>
       </div>
+
+      <div className="container footer-base">
+        <p>Code G.Buck</p>
+      </div>
     </footer>
   );
 }

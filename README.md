@@ -29,7 +29,16 @@ npm run preview  # serve o build
 
 Em dev o vite faz proxy de `/api` para o backend, então não há CORS no caminho.
 No build o site é estático e a API mora em outro host: passe a URL dela em
-`VITE_API_URL` (`VITE_API_URL=https://api.exemplo.com npm run build`).
+`VITE_API_URL` (`VITE_API_URL=https://api.exemplo.com npm run build`). Com domínio
+próprio o site vive na raiz: acrescente `VITE_BASE=/` (sem ela, o `base` é
+`/Mosseri-Barbearia/`, o subcaminho do Pages).
+
+## Deploy
+
+`.github/workflows/pages.yml` publica no GitHub Pages a cada push na `main`.
+Configure no repositório: Pages > Source = GitHub Actions, e as variáveis
+`VITE_API_URL` (obrigatória) e `VITE_BASE`. Tudo que começa com `VITE_` vai para
+dentro do JavaScript publicado: nunca coloque segredo aí.
 
 ## Scripts de assets
 
@@ -57,9 +66,26 @@ azul de propósito (o projeto nunca usa cinza puro):
 | `--blue` | `#01539c` | acento da marca |
 | `--blue-bright` | `#3d8ddb` | azul de texto, links e preços |
 
-O container acompanha a janela (`clamp(320px, 49vw, 1100px)`) porque no design
-original o conteúdo ocupa cerca de metade da largura da tela, e não uma largura
-fixa.
+O container acompanha a janela — `min(100%, clamp(720px, 49vw, 1100px))` —
+porque no design original o conteúdo ocupa cerca de metade da largura da tela, e
+não uma largura fixa. As três partes da fórmula fazem coisas diferentes:
+
+| Parte | Para quê |
+|---|---|
+| `49vw` | a proporção do design: em monitor grande o conteúdo é meia tela |
+| `720px` (piso) | no notebook metade da tela já é estreita demais; abaixo disso a coluna para de encolher |
+| `min(100%, …)` | no celular a coluna enche a tela, em vez de travar numa largura maior que ela |
+
+A calha lateral é `--gutter: clamp(16px, 4vw, 32px)`: 32px é certo no desktop e
+comia o conteúdo num aparelho de 360px.
+
+Medido de 320px a 2560px nas quatro páginas públicas, o container vai de 305px a
+1100px sem degrau e nenhuma delas gera rolagem horizontal.
+
+**Cuidado ao estilizar um elemento que também é `.container`.** As regras dessas
+classes vêm depois na folha, então um `padding` shorthand apaga a calha lateral
+que o `.container` tinha definido — foi o que acontecia com `.booking-grid` e
+`.estado-vazio`. Nesses casos repita a calha: `padding: 40px var(--gutter) 70px`.
 
 ## Dados
 

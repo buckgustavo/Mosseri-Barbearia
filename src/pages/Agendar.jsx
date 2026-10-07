@@ -30,6 +30,48 @@ const rotuloCurto = (s) => {
   return `${dow}, ${String(dom).padStart(2, "0")}/${s.slice(5, 7)}`;
 };
 
+// Numero da casa, o mesmo do rodape e do atalho de quando a agenda nao carrega.
+const WHATSAPP = "5516993944841";
+
+// No cartao da reserva a data vai por extenso: a mensagem e lida fora do site,
+// dias depois, onde "01/10" sozinho nao diz o mes nem o dia da semana.
+const rotuloLongo = (s) => {
+  const { dow, dom, mon } = rotuloDia(s);
+  return `${dow}, ${String(dom).padStart(2, "0")} de ${mon}`;
+};
+
+// Quem manda e o cliente, e o destinatario e a barbearia -- por isso o texto
+// fala na primeira pessoa. A reserva ja esta gravada no banco quando este
+// botao aparece: a mensagem e comprovante na mao do cliente e aviso pra casa,
+// nunca o que confirma o horario.
+function mensagemReserva(r) {
+  const linhas = [
+    "Olá! Minha reserva na Mosseri está confirmada.",
+    "",
+    `*Código:* ${r.codigo}`,
+    `*Cliente:* ${r.cliente.nome}`,
+    `*Barbeiro:* ${r.barbeiro.nome}`,
+    `*Serviço:* ${r.servico.nome}`,
+    `*Quando:* ${rotuloLongo(r.data)} · ${r.horario} às ${r.termina} (${r.duracao})`,
+    `*Total:* R$ ${r.preco}`,
+  ];
+  if (r.observacao) linhas.push(`*Observação:* ${r.observacao}`);
+  return linhas.join("\n");
+}
+
+const linkWhatsApp = (r) =>
+  `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(mensagemReserva(r))}`;
+
+// Glifo do WhatsApp. Herda a cor do botao (`currentColor`) para nao furar a
+// paleta: o verde da marca nao existe nos tokens do projeto.
+function IconeWhatsApp() {
+  return (
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.988 2.896 9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24 0 12.045 0 5.463 0 .104 5.359.101 11.943c0 2.096.546 4.142 1.588 5.945L0 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.58 0 11.94-5.359 11.942-11.945A11.86 11.86 0 0 0 20.52 3.449" />
+    </svg>
+  );
+}
+
 // Segunda-feira da semana de uma data: o grid do dia sempre abre na segunda,
 // como no design.
 function segundaDa(data) {
@@ -311,7 +353,7 @@ export default function Agendar() {
       <div className="container estado-vazio">
         <h1>A agenda não carregou.</h1>
         <p className="page-lead">{erroInicial}</p>
-        <a className="whatsapp-link" href="https://wa.me/5516993944841" target="_blank" rel="noreferrer">
+        <a className="whatsapp-link" href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noreferrer">
           Agende no WhatsApp: (16) 99394-4841 <span aria-hidden="true">→</span>
         </a>
       </div>
@@ -517,6 +559,14 @@ export default function Agendar() {
 
               {reserva.status === "confirmado" ? (
                 <>
+                  <a
+                    className="btn btn-primary btn-block"
+                    href={linkWhatsApp(reserva)}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <IconeWhatsApp /> Enviar no WhatsApp
+                  </a>
                   <button
                     className="btn btn-outline btn-block"
                     onClick={cancelar}

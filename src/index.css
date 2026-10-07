@@ -15,7 +15,22 @@
   --text-muted: #8e97a5;
   --text-dim: #5c6472;
   --radius: 3px;
-  --container: clamp(320px, 49vw, 1100px);
+
+  /* Calha lateral: 32px e certo no desktop e come o conteudo no telefone --
+     num aparelho de 360px eram 64px de padding sobre uma coluna de 320px. */
+  --gutter: clamp(16px, 4vw, 32px);
+
+  /* No design original o conteudo ocupa cerca de metade da tela, e e isso que
+     o 49vw guarda nos monitores grandes. O resto da formula conserta os dois
+     defeitos de aplicar essa proporcao em toda largura:
+       - min(100%) deixa a coluna encher a tela nos aparelhos pequenos, em vez
+         de travar em 320px e estourar para fora abaixo disso;
+       - o piso de 720px impede a coluna de encolher junto com a janela nos
+         notebooks, onde metade da tela ja e estreita demais.
+     Antes havia um degrau visivel: um `@media (max-width: 900px)` trocava a
+     largura por 92vw, entao a coluna pulava de 441px em 901px para 827px em
+     899px. Agora a curva e continua. */
+  --container: min(100%, clamp(720px, 49vw, 1100px));
 }
 
 * {
@@ -90,7 +105,7 @@ p {
 .container {
   width: var(--container);
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 var(--gutter);
 }
 
 /* Buttons */
@@ -152,7 +167,7 @@ p {
 .nav-inner {
   width: var(--container);
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 var(--gutter);
   height: 64px;
   display: flex;
   align-items: center;
@@ -205,7 +220,7 @@ p {
   padding: 0;
 }
 
-.nav-links a {
+.nav-links a:not(.btn) {
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -215,8 +230,8 @@ p {
   border-bottom: 1px solid transparent;
 }
 
-.nav-links a.active,
-.nav-links a:hover {
+.nav-links a.active:not(.btn),
+.nav-links a:hover:not(.btn) {
   color: var(--text);
   border-bottom-color: var(--blue-bright);
 }
@@ -319,6 +334,21 @@ p {
   gap: 32px;
 }
 
+/* Assinatura de quem fez: linha solta e centrada, sem fio separando.
+   Sem `padding` shorthand de proposito -- ele apagaria a calha lateral do
+   .container, que esta regra tambem carrega. */
+.footer-base {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footer-base p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
 .footer-brand .logo {
   font-size: 16px;
 }
@@ -349,13 +379,6 @@ p {
   margin-top: 16px;
   max-width: 240px;
   line-height: 1.65;
-}
-
-@media (max-width: 900px) {
-  .container,
-  .nav-inner {
-    width: 92vw;
-  }
 }
 
 @media (max-width: 720px) {
@@ -555,7 +578,7 @@ p {
   align-items: start;
 }
 
-/* Mini mapa: Leaflet com tiles escuros da CARTO e um pino azul pulsante,
+/* Mini mapa: Leaflet com tiles escuros da Esri (so depois do clique) e um pino azul pulsante,
    como no video do projeto original. A moldura 4:3 vem do PDF. */
 .map-box {
   position: relative;
@@ -643,6 +666,61 @@ p {
   .mapa-pino-halo {
     animation: none;
   }
+}
+
+/* Cartao do mapa antes do clique: ruas sugeridas por gradiente, sem tile de
+   ninguem. O pino e o mesmo do mapa de verdade. */
+.mapa-estatico {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px;
+  text-align: center;
+  background-color: #0b0e15;
+  background-image:
+    linear-gradient(28deg, transparent 47%, rgba(255, 255, 255, 0.07) 47.5%, rgba(255, 255, 255, 0.07) 49.5%, transparent 50%),
+    linear-gradient(118deg, transparent 63%, rgba(255, 255, 255, 0.05) 63.5%, rgba(255, 255, 255, 0.05) 64.5%, transparent 65%),
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+}
+
+.mapa-estatico-pino {
+  position: relative;
+  width: 22px;
+  height: 22px;
+}
+
+.mapa-estatico-endereco {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.mapa-estatico-botao {
+  position: relative;
+  z-index: 460;
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: rgba(11, 14, 21, 0.85);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.mapa-estatico-botao:hover,
+.mapa-estatico-botao:focus-visible {
+  border-color: #3d8ddb;
+}
+
+.mapa-estatico-aviso {
+  color: var(--text-dim);
+  font-size: 10px;
 }
 
 .map-label-top,
@@ -762,6 +840,7 @@ p {
 
 .tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -914,7 +993,19 @@ p {
   text-align: center;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
+  .ig-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .ig-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 460px) {
   .ig-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -1030,7 +1121,8 @@ p {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 48px;
-  padding: 40px 0 70px;
+  /* a calha vem do .container e o shorthand a apagaria: repetir e obrigatorio */
+  padding: 40px var(--gutter) 70px;
   align-items: start;
 }
 
@@ -1483,7 +1575,8 @@ p {
 }
 
 .estado-vazio {
-  padding: 80px 0 100px;
+  /* idem .booking-grid: preserva a calha lateral do .container */
+  padding: 80px var(--gutter) 100px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1793,6 +1886,18 @@ p {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+/* 240px de nome + 110px por barbeiro passam da coluna muito antes do ponto em
+   que a grade empilha. Rolagem propria aqui evita barra horizontal na pagina. */
+@media (min-width: 861px) {
+  .grade-precos {
+    overflow-x: auto;
+  }
+
+  .grade-precos .grade-linha {
+    min-width: max-content;
+  }
 }
 
 .grade-linha {

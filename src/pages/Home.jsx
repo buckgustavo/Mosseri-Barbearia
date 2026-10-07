@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
-import glyph from "../assets/mosseri-glyph.svg";
 import { foto } from "../foto";
-import Marquee from "../components/Marquee";
+import CtaAgenda from "../components/CtaAgenda";
 import MiniMapa from "../components/MiniMapa";
 
 export default function Home() {
@@ -161,20 +160,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Marquee text="Sua identidade, nosso cuidado · Corte · Barba · Barboterapia" />
-
-      <section className="cta-banner">
-        <div className="container cta-banner-inner">
-          <div>
-            <span className="eyebrow">04 · Agenda</span>
-            <h2 style={{ marginTop: 10 }}>A cadeira é sua. Basta marcar.</h2>
-          </div>
-          <Link to="/agendar" className="btn btn-white">
-            Ver horários
-          </Link>
-        </div>
-        <img className="logo-ghost" src={glyph} alt="" aria-hidden="true" />
-      </section>
+      <CtaAgenda />
     </>
   );
 }
